@@ -70,4 +70,4 @@ spec:
   selector:
     app: mongo
   ports:
-    - port: 5432
+    - port: 27017

@@ -5,11 +5,9 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: messages
-  POSTGRES_USER: root
-  POSTGRES_PASSWORD: root
+  SPRING_DATA_MONGODB_HOST: mongo-svc
 
----  
+---
   
 apiVersion: apps/v1
 kind: Deployment
