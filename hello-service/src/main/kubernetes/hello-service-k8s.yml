@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-service-deployment
+  labels:
+    app: hello-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-service
+  template:
+    metadata:
+      labels:
+        app: hello-service
+    spec:
+      containers:
+        - name: hello-service
+          image: mrflick72/hello-service:latest
+          ports:
+            - containerPort: 8080
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-service-svc
+spec:
+  selector:
+    app: hello-service
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-service-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /hello-service/
+            backend:
+              serviceName: hello-service-svc
+              servicePort: 8080

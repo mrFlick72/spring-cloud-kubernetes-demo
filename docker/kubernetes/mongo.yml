@@ -1,0 +1,73 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo-pv-volume
+  labels:
+    type: local
+    app: mongo
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/mongodb"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-pv-claim
+  labels:
+    app: mongo
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /var/lib/mongodb
+              name: mongodb
+      volumes:
+        - name: mongodb
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongo-svc
+spec:
+  selector:
+    app: mongo
+  ports:
+    - port: 5432

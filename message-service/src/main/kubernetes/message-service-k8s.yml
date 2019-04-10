@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: message-service-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: messages
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: root
+
+---  
+  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-service-deployment
+  labels:
+    app: message-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: message-service
+  template:
+    metadata:
+      labels:
+        app: message-service
+    spec:
+      containers:
+        - name: message-service
+          image: mrflick72/message-service:latest
+          ports:
+            - containerPort: 8080
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: message-service-svc
+spec:
+  selector:
+    app: message-service
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: message-service-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /message-service/
+            backend:
+              serviceName: message-service-svc
+              servicePort: 8080

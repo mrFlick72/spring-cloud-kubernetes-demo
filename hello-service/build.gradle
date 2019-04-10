@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'java'
+
+    id "com.palantir.docker" version "0.21.0"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'it.valeriovaudi'
+//version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+jar{
+    archiveFileName = "hello-service"
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', 'Greenwich.SR1')
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-all'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+
+docker {
+    name 'mrflick72/hello-service:latest'
+    dockerfile file('src/main/docker/Dockerfile')
+    copySpec.from("build/libs/hello-service.jar").into("hello-service.jar")
+    pull true
+    noCache true
+}
