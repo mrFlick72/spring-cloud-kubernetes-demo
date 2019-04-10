@@ -27,6 +27,12 @@ class MessageRoute(private val messageRepository: MessageRepository) {
 
     @Bean
     fun route() = router {
+        GET("/message-service/message") {
+            messageRepository.findAll()
+                    .collectList()
+                    .flatMap { ok().body(fromObject(it)) }
+        }
+
         GET("/message-service/message/{messageId}") {
             messageRepository.findById(it.pathVariable("messageId"))
                     .flatMap { ok().body(fromObject(it)) }

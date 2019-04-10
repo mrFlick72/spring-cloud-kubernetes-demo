@@ -30,7 +30,9 @@ spec:
           image: mrflick72/message-service:latest
           ports:
             - containerPort: 8080
-
+          envFrom:
+            - configMapRef:
+                name: message-service-config
 ---
 
 kind: Service
