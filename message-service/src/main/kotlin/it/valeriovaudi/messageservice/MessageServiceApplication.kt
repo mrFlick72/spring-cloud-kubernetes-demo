@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.web.reactive.function.BodyInserters.fromObject
 import org.springframework.web.reactive.function.server.router
 import org.springframework.web.util.UriComponentsBuilder
-import java.net.URI
+import java.util.*
 
 @SpringBootApplication
 class MessageServiceApplication
@@ -27,10 +27,23 @@ class MessageRoute(private val messageRepository: MessageRepository) {
 
     @Bean
     fun route() = router {
+
         GET("/message-service/message") {
             messageRepository.findAll()
                     .collectList()
                     .flatMap { ok().body(fromObject(it)) }
+        }
+
+        GET("/message-service/message/random") {
+            messageRepository.findAll()
+                    .collectList()
+                    .flatMap {
+                        if (it.size != 0) {
+                            ok().body(fromObject(it[Random().nextInt(it.size) - 1]))
+                        } else {
+                            notFound().build()
+                        }
+                    }
         }
 
         GET("/message-service/message/{messageId}") {

@@ -41,7 +41,7 @@ class HelloService {
     }
 
     public String sayHello(String name) {
-        webClient.post().uri("").body(null).exchange();
+        webClient.post().uri("http://").body(null).exchange();
         return "";
     }
 }*/
