@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
-import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.reactive.function.BodyInserters.fromObject
 import org.springframework.web.reactive.function.server.router
+import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
 
 @SpringBootApplication
 class MessageServiceApplication
@@ -17,8 +18,7 @@ fun main(args: Array<String>) {
     runApplication<MessageServiceApplication>(*args)
 }
 
-data class Message(@Id var id: String? = null,
-                   var message: String = "")
+data class Message(@Id var id: String? = null, var message: String = "")
 
 interface MessageRepository : ReactiveMongoRepository<Message, String>
 
@@ -41,7 +41,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
         POST("/message-service/message") {
             it.bodyToMono(Message::class.java)
                     .flatMap { messageRepository.save(it) }
-                    .flatMap { status(CREATED).build() }
+                    .flatMap { created(UriComponentsBuilder.fromPath("/message-service/message/${it.id}").build().toUri()).build() }
         }
 
         PUT("/message-service/message/{messageId}") {
@@ -53,7 +53,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
                             messageRepository.save(it)
                         }
                     }
-                    .flatMap { status(CREATED).build() }
+                    .flatMap { noContent().build() }
         }
     }
 }

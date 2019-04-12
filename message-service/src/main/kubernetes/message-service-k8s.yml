@@ -3,9 +3,10 @@ kind: ConfigMap
 metadata:
   name: message-service-config
   labels:
-    app: postgres
+    app: message-service
 data:
-  SPRING_DATA_MONGODB_HOST: mongo-svc
+  SPRING_DATA_MONGODB_HOST: "mongo-svc"
+  SERVER_USEFORWARDHEADERS: "true"
 
 ---
   
@@ -16,7 +17,7 @@ metadata:
   labels:
     app: message-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: message-service

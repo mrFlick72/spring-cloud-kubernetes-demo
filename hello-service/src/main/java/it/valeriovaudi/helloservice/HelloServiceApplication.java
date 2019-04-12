@@ -1,10 +1,11 @@
 package it.valeriovaudi.helloservice;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -23,7 +24,27 @@ public class HelloServiceApplication {
         SpringApplication.run(HelloServiceApplication.class, args);
     }
 
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder()
+                .build();
+    }
 }
+
+/*@Service
+class HelloService {
+
+    private final WebClient webClient;
+
+    MessageService(WebClient webClient) {
+        this.webClient = webClient;
+    }
+
+    public String sayHello(String name) {
+        webClient.post().uri("").body(null).exchange();
+        return "";
+    }
+}*/
 
 @Configuration
 class RouteConfig {
