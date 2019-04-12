@@ -28,13 +28,13 @@ class MessageRoute(private val messageRepository: MessageRepository) {
     @Bean
     fun route() = router {
 
-        GET("/message-service/message") {
+        GET("/message") {
             messageRepository.findAll()
                     .collectList()
                     .flatMap { ok().body(fromObject(it)) }
         }
 
-        GET("/message-service/message/random") {
+        GET("/message/random") {
             messageRepository.findAll()
                     .collectList()
                     .flatMap {
@@ -46,18 +46,18 @@ class MessageRoute(private val messageRepository: MessageRepository) {
                     }
         }
 
-        GET("/message-service/message/{messageId}") {
+        GET("/message/{messageId}") {
             messageRepository.findById(it.pathVariable("messageId"))
                     .flatMap { ok().body(fromObject(it)) }
         }
 
-        POST("/message-service/message") {
+        POST("/message") {
             it.bodyToMono(Message::class.java)
                     .flatMap { messageRepository.save(it) }
-                    .flatMap { created(UriComponentsBuilder.fromPath("/message-service/message/${it.id}").build().toUri()).build() }
+                    .flatMap { created(UriComponentsBuilder.fromPath("/message/${it.id}").build().toUri()).build() }
         }
 
-        PUT("/message-service/message/{messageId}") {
+        PUT("/message/{messageId}") {
             val messageId = it.pathVariable("messageId")
             it.bodyToMono(Message::class.java)
                     .flatMap {

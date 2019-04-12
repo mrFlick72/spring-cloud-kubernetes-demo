@@ -52,11 +52,13 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: message-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
     - http:
         paths:
-          - path: /message-service/
+          - path: /message-service/?(.*)
             backend:
               serviceName: message-service-svc
               servicePort: 8080
