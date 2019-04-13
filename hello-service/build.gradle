@@ -24,10 +24,11 @@ ext {
 }
 
 dependencies {
+
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-all'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+    compile 'org.projectlombok:lombok:1.18.6'
 }
 
 dependencyManagement {

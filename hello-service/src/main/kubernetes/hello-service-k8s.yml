@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-service-config
+  labels:
+    app: hello-service
+data:
+  hello-service-uri: "http://message-service.default.svc.cluster.local:8080/message/random"
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,7 +16,7 @@ metadata:
   labels:
     app: hello-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: hello-service
@@ -19,6 +30,9 @@ spec:
           image: mrflick72/hello-service:latest
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: hello-service-config
 
 ---
 

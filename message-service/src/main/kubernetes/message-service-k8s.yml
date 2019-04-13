@@ -39,7 +39,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: message-service-svc
+  name: message-service
 spec:
   selector:
     app: message-service
@@ -60,5 +60,5 @@ spec:
         paths:
           - path: /message-service/?(.*)
             backend:
-              serviceName: message-service-svc
+              serviceName: message-service
               servicePort: 8080
