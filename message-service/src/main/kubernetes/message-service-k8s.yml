@@ -18,6 +18,11 @@ metadata:
     app: message-service
 spec:
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   selector:
     matchLabels:
       app: message-service
@@ -31,6 +36,22 @@ spec:
           image: mrflick72/message-service:latest
           ports:
             - containerPort: 8080
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
           envFrom:
             - configMapRef:
                 name: message-service-config
