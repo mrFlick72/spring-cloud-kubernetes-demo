@@ -39,7 +39,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
                     .collectList()
                     .flatMap {
                         if (it.size != 0) {
-                            ok().body(fromObject(it[Random().nextInt(it.size) - 1]))
+                            ok().body(fromObject(it[Random().nextInt(it.size)]))
                         } else {
                             notFound().build()
                         }
