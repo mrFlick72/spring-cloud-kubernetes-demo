@@ -5,7 +5,7 @@ metadata:
   labels:
     app: hello-service
 data:
-  hello-service-uri: "http://message-service.default.svc.cluster.local:8080/message/random"
+  hello-service-uri: "http://message-service:8080/message/random"
 
 ---
 

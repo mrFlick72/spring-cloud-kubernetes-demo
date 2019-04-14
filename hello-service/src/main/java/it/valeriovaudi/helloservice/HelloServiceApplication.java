@@ -18,6 +18,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import static java.lang.String.*;
@@ -59,8 +60,8 @@ class HelloService {
         return webClient.get()
                 .uri(helloServiceUri)
                 .retrieve()
-                .bodyToMono(String.class)
-                .flatMap(message -> Mono.just(format(template, name, instanceID, message)));
+                .bodyToMono(HashMap.class)
+                .flatMap(payload -> Mono.just(format(template, name, instanceID, payload.getOrDefault("message", "no special message for you today :("))));
     }
 }
 
