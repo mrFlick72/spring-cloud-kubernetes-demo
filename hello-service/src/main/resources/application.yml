@@ -8,4 +8,4 @@ message-service:
       enabled: false
     client:
       enabled: true
-    ServerListRefreshInterval: 5000
+    ServerListRefreshInterval: 50
