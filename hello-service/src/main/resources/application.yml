@@ -2,14 +2,12 @@ spring:
   application:
     name: hello-service
 
-message-service:
-  ribbon:
-    eureka:
-      enabled: false
-    client:
-      enabled: true
-    ServerListRefreshInterval: 50
-
+ribbon:
+  eureka:
+    enabled: false
+  client:
+    enabled: true
+  ServerListRefreshInterval: 50
 
 management:
   endpoints:

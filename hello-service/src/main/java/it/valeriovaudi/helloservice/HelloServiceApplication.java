@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerExchangeFilterFunction;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,6 @@ import java.util.UUID;
 import static java.lang.String.*;
 import static org.springframework.web.reactive.function.server.ServerResponse.*;
 
-@RibbonClient("message-service")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class HelloServiceApplication {
@@ -33,10 +33,11 @@ public class HelloServiceApplication {
         SpringApplication.run(HelloServiceApplication.class, args);
     }
 
+
     @Bean
     @LoadBalanced
-    public WebClient webClient() {
-        return WebClient.builder().build();
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
     }
 }
 
@@ -48,16 +49,16 @@ class HelloService {
     private final String template = "Hello %s from service instance %s the special message for you to day is %s";
 
     private final String helloServiceUri;
-    private final WebClient webClient;
+    private WebClient.Builder webClientBuilder;
 
-    HelloService(@Value("${hello-service-uri:}") String helloServiceUri, WebClient webClient) {
+    HelloService(@Value("${hello-service-uri:}") String helloServiceUri, WebClient.Builder webClientBuilder) {
         this.helloServiceUri = helloServiceUri;
-        this.webClient = webClient;
+        this.webClientBuilder = webClientBuilder;
     }
 
     Mono<String> sayHello(String name) {
         System.out.println("helloServiceUri: " + helloServiceUri);
-        return webClient.get()
+        return webClientBuilder.build().get()
                 .uri(helloServiceUri)
                 .retrieve()
                 .bodyToMono(HashMap.class)
