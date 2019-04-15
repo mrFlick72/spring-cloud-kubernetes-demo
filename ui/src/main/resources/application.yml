@@ -1,3 +1,17 @@
 spring:
   application:
     name: ui-interface
+
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
+      routes:
+        - id: hello-service
+          uri: lb://hello-service
+          predicates:
+            - Path=forward:/hello-service/**
+      discovery:
+        locator:
+          enabled: true

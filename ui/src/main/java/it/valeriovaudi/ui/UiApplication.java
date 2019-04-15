@@ -2,10 +2,9 @@ package it.valeriovaudi.ui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+@EnableDiscoveryClient
 @SpringBootApplication
 public class UiApplication {
 
@@ -13,14 +12,4 @@ public class UiApplication {
         SpringApplication.run(UiApplication.class, args);
     }
 
-}
-
-@Controller
-class IndexController {
-
-    @GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("message", "message");
-        return "index";
-    }
 }

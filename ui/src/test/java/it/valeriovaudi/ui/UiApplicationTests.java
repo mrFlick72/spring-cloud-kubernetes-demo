@@ -1,4 +1,4 @@
-package it.valeriovaudi.gateway;
+package it.valeriovaudi.ui;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
