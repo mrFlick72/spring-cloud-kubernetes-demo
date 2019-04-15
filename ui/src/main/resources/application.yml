@@ -2,16 +2,22 @@ spring:
   application:
     name: ui-interface
 
-  cloud:
-    gateway:
-      httpclient:
-        ssl:
-          useInsecureTrustManager: true
-      routes:
-        - id: hello-service
-          uri: lb://hello-service
-          predicates:
-            - Path=forward:/hello-service/**
-      discovery:
-        locator:
-          enabled: true
+ribbon:
+  eureka:
+    enabled: false
+  client:
+    enabled: true
+  ServerListRefreshInterval: 50
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+  server:
+    port: 8081
