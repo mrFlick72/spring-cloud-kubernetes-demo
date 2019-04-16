@@ -1,24 +1,19 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: ui-interface-config
+  name: ui-interface
 data:
-  application.yml: |-
+  application.yaml: |-
     spring:
       cloud:
-        kubernetes:
-          enabled: true
-          reload:
-            enabled: true
         gateway:
-          discovery:
-            locator:
-              enabled: true
           routes:
             - id: hello-service
-              uri: lb://hello-service
+              uri: lb://hello-service-svc/
               predicates:
                 - Path=/hello-service/**
+              filters:
+                - StripPrefix=1
 
 ---
 
@@ -48,13 +43,10 @@ spec:
           image: mrflick72/ui-interface:latest
           ports:
             - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: ui-interface-config
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8081
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1
@@ -62,7 +54,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8081
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1

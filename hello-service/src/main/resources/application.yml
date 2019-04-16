@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: hello-service
-
 ribbon:
   eureka:
     enabled: false

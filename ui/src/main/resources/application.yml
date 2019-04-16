@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: ui-interface
-
 ribbon:
   eureka:
     enabled: false
@@ -15,9 +11,11 @@ management:
       exposure:
         include: "*"
   endpoint:
+    restart:
+      enabled: true
     shutdown:
       enabled: true
     health:
       show-details: ALWAYS
   server:
-    port: 8081
+    port: 8080
