@@ -67,6 +67,7 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
+      nodePort: 30080
   type: NodePort
 
 ---
