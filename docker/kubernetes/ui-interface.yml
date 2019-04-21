@@ -4,9 +4,6 @@ metadata:
   name: ui-interface
 data:
   application.yaml: |-
-    server:
-      servlet:
-        context-path: /ui
     spring:
       cloud:
         gateway:
