@@ -1,0 +1,74 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ui-interface
+data:
+  application.yaml: |-
+    spring:
+      cloud:
+        gateway:
+          routes:
+            - id: hello-service
+              uri: lb://hello-service-svc/
+              predicates:
+                - Path=/hello-service/**
+              filters:
+                - StripPrefix=1
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-interface-deployment
+  labels:
+    app: ui-interface
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: ui-interface
+  template:
+    metadata:
+      labels:
+        app: ui-interface
+    spec:
+      containers:
+        - name: ui-interface
+          image: mrflick72/ui-interface:latest
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: ui-interface
+spec:
+  selector:
+    app: ui-interface
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30080
+  type: NodePort
