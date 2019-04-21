@@ -4,7 +4,6 @@ ribbon:
   client:
     enabled: true
   ServerListRefreshInterval: 50
-
 management:
   endpoints:
     web:
