@@ -16,7 +16,7 @@ metadata:
   labels:
     app: hello-service
 spec:
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
