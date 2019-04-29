@@ -14,7 +14,12 @@ data:
                 - Path=/hello-service/**
               filters:
                 - StripPrefix=1
-
+            - id: message-service
+              uri: lb://message-service/
+              predicates:
+                - Path=/message-service/**
+              filters:
+                - StripPrefix=1
 ---
 
 apiVersion: apps/v1

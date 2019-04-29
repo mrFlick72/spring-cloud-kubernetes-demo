@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ui Interface</title>
+</head>
+<body>
+
+
+<p id="message"></p>
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+        crossorigin="anonymous"></script>
+
+<script>
+    $.ajax("/ui/hello-service/hello/Valerio")
+        .done(function (data) {
+            $("#message").text(data)
+        })
+</script>
+</body>
+</html>
