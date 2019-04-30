@@ -53,7 +53,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: 8081
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1
@@ -61,7 +61,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: 8081
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1
@@ -76,7 +76,7 @@ spec:
     app: ui-interface
   ports:
     - protocol: TCP
-      port: 8080
+      port: 808
 ---
 
 apiVersion: extensions/v1beta1
