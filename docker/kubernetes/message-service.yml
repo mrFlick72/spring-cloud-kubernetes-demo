@@ -1,12 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: message-service-config
+  name: message-service
   labels:
     app: message-service
 data:
-  SPRING_DATA_MONGODB_HOST: "mongo-svc"
-  SERVER_USEFORWARDHEADERS: "true"
+  application.yml: |-
+    spring:
+      data:
+        mongodb:
+          host: mongo-svc
+    server:
+      use-forward-headers: true
 
 ---
   
@@ -52,9 +57,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1
-          envFrom:
-            - configMapRef:
-                name: message-service-config
 ---
 
 kind: Service

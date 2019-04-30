@@ -1,11 +1,18 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hello-service-config
+  name: hello-service
   labels:
     app: hello-service
 data:
-  hello-service-uri: "http://message-service/message/random"
+  application.yaml: |-
+    hello-service-uri: http://message-service/message/random
+    ribbon:
+      eureka:
+        enabled: false
+      client:
+        enabled: true
+      ServerListRefreshInterval: 50
 
 ---
 
@@ -51,10 +58,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
             successThreshold: 1
-          envFrom:
-            - configMapRef:
-                name: hello-service-config
-
 ---
 
 kind: Service

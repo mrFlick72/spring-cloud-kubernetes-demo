@@ -1,3 +1,27 @@
 spring:
   application:
     name: hello-service
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
+      config:
+        sources:
+          - name: ${spring.application.name}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+  server:
+    port: 8081
