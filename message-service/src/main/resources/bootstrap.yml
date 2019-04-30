@@ -1,6 +1,15 @@
 spring:
   application:
     name: message-service
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
+      config:
+        sources:
+          - name: ${spring.application.name}
 
 management:
   endpoints:
@@ -8,6 +17,8 @@ management:
       exposure:
         include: "*"
   endpoint:
+    restart:
+      enabled: true
     shutdown:
       enabled: true
     health:
