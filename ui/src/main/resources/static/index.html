@@ -10,20 +10,7 @@
 </head>
 <body>
 
-
-<div class="jumbotron">
-    <h1 class="display-4">Hello, world!</h1>
-    <form class="lead">
-        <div class="form-group">
-            <label for="name">Say Hello to </label>
-            <input type="text" class="form-control" id="name" placeholder="your name">
-        </div>
-        <button type="button" id="submitHello" class="btn btn-primary">Submit</button>
-    </form>
-    <hr class="my-4">
-
-    <p id="message"></p>
-</div>
+<div id="app" ></div>
 
 
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"
@@ -36,18 +23,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-<script>
-    function sayHello() {
-        var name = $("#name").val();
-        $.ajax("/ui/hello-service/hello/" + name)
-            .done(function (data) {
-                $("#message").text(data)
-            })
-    }
-
-    $("#submitHello")
-        .click(sayHello)
-
-</script>
 </body>
 </html>

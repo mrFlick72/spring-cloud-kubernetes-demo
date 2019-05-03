@@ -6,22 +6,22 @@ const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/static");
 module.exports = {
     mode: 'production',
     entry: {
-        familyBudget: path.resolve(__dirname, './app/family-budget-site/index.js'),
-        admin: path.resolve(__dirname, './app/admin-site/index.js')
+        site: path.resolve(__dirname, './app/site/index.js'),
+        messagesSite: path.resolve(__dirname, './app/messages-site/index.js')
     },
     resolve: {
         extensions: [".js", ".jsx"]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            chunks: ['familyBudget'],
+            chunks: ['site'],
             filename: "index.html",
             template: path.resolve(__dirname, "../resources/static/index.html")
         }),
         new HtmlWebpackPlugin({
-            chunks: ['admin'],
-            filename: "admin.html",
-            template: path.resolve(__dirname, "../resources/static/admin.html")
+            chunks: ['messagesSite'],
+            filename: "messages.html",
+            template: path.resolve(__dirname, "../resources/static/messages.html")
         })
     ],
     module: {
