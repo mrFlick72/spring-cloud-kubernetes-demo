@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: hello-service
+          uri: lb://hello-service/
+          predicates:
+            - Path=/ui/hello-service/**
+          filters:
+            - StripPrefix=2
+        - id: message-service
+          uri: lb://message-service/
+          predicates:
+            - Path=/ui/message-service/**
+          filters:
+            - StripPrefix=2
