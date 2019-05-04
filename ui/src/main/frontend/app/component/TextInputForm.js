@@ -6,7 +6,6 @@ export default ({value, onChangeHandler, componentId, componentLabel, componentP
         <input className="form-control"
                ref={inputRef}
                id={componentId}
-               onChange={onChangeHandler}
                placeholder={componentPlaceholder} value={value}/>
     </div>
 }
