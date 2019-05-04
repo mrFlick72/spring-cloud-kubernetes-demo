@@ -1,6 +1,7 @@
 import React from "react"
 import Jumbotron from "../component/Jumbotron";
 import MessageRepository from "../repository/MessageRepository";
+import TextInputForm from "../component/TextInputForm";
 
 export default class MainSiteApp extends React.Component {
 
@@ -8,7 +9,7 @@ export default class MainSiteApp extends React.Component {
         super(props)
 
         this.state = {
-            message: "initial message"
+            message: "No message right now"
         };
 
         this.inputRef = React.createRef();
@@ -17,18 +18,25 @@ export default class MainSiteApp extends React.Component {
     }
 
     sayHello() {
-        console.log("this.inputRef")
-        console.log("this.inputRef " + this.inputRef.current.value)
         this.messageRepository
             .sayHelloTo(this.inputRef.current.value)
             .then(message => this.setState({message: message}))
     }
 
     render() {
-        console.log(this.inputRef)
+        let leadSection = <form>
+            <TextInputForm inputRef={this.inputRef}
+                           componentId="name"
+                           componentLabel="Say Hello to "
+                           componentPlaceholder="Say Hello to "/>
+            <button type="button" onClick={this.sayHello} className="btn btn-primary">Submit</button>
+        </form>
+        let bottomSection = <p>{this.state.message}</p>
+
         return <Jumbotron title="Hello, world!"
                           inputRef={this.inputRef}
-                          message={this.state.message}
-                          submitFn={this.sayHello}/>
+                          leadSection={leadSection}
+                          bottomSection={bottomSection}
+                          message={this.state.message}/>
     }
 }
