@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BUID_DIR = path.resolve(__dirname + "../../../../target/classes/static");
 
 module.exports = {
-    mode: 'production',
+    // mode: 'production',
     entry: {
         site: path.resolve(__dirname, './app/site/index.js'),
         messagesSite: path.resolve(__dirname, './app/messages-site/index.js')

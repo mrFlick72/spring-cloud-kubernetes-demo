@@ -2,7 +2,7 @@ import React from "react"
 import TextInputForm from "./TextInputForm";
 
 export default ({title, submitFn, inputRef, message}) => {
-    console.log(inputRef.current)
+    console.log(inputRef)
     return <div className="jumbotron">
         <h1 className="display-4">{title}</h1>
         <form className="lead">

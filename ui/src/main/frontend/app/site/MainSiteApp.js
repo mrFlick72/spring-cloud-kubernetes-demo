@@ -8,25 +8,27 @@ export default class MainSiteApp extends React.Component {
         super(props)
 
         this.state = {
-            message: ""
-        }
+            message: "initial message"
+        };
 
-        this.inputRef = React.createRef()
+        this.inputRef = React.createRef();
         this.messageRepository = new MessageRepository();
+        this.sayHello = this.sayHello.bind(this);
     }
 
     sayHello() {
-        console.log(this.inputRef)
-        console.log(this.inputRef.current)
+        console.log("this.inputRef")
+        console.log("this.inputRef " + this.inputRef.current.value)
         this.messageRepository
-            .sayHelloTo(this.inputRef.current)
+            .sayHelloTo(this.inputRef.current.value)
             .then(message => this.setState({message: message}))
     }
 
     render() {
+        console.log(this.inputRef)
         return <Jumbotron title="Hello, world!"
                           inputRef={this.inputRef}
                           message={this.state.message}
-                          submitFn={this.sayHello.bind()}/>
+                          submitFn={this.sayHello}/>
     }
 }
