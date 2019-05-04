@@ -1,6 +1,7 @@
 import React from "react"
 import Jumbotron from "../component/Jumbotron";
 import MessageRepository from "../repository/MessageRepository";
+import TextInputForm from "../component/TextInputForm";
 
 export default class MessageSiteApp extends React.Component {
 
@@ -8,27 +9,51 @@ export default class MessageSiteApp extends React.Component {
         super(props)
 
         this.state = {
-            message: "initial message"
+            messages: []
         };
 
         this.inputRef = React.createRef();
         this.messageRepository = new MessageRepository();
-        this.sayHello = this.sayHello.bind(this);
+        this.saveMessage = this.saveMessage.bind(this);
+        this.displayMessages = this.displayMessages.bind(this);
     }
 
-    sayHello() {
-        console.log("this.inputRef")
-        console.log("this.inputRef " + this.inputRef.current.value)
+    saveMessage() {
         this.messageRepository
-            .sayHelloTo(this.inputRef.current.value)
-            .then(message => this.setState({message: message}))
+            .saveMessage({message: this.inputRef.current.value})
+            .then(response => this.displayMessages())
+    }
+
+    componentDidMount() {
+        this.displayMessages();
+    }
+
+    displayMessages() {
+        this.messageRepository.findMessages()
+            .then(data => {
+                console.log(data)
+                this.setState({messages: data})
+            })
     }
 
     render() {
-        console.log(this.inputRef)
-        return <Jumbotron title="Hello, world!"
+        let leadSection = <form>
+            <TextInputForm inputRef={this.inputRef}
+                           componentId="name"
+                           componentLabel="New Special Message"
+                           componentPlaceholder="New Special Message..."/>
+            <button type="button" onClick={this.saveMessage} className="btn btn-primary">Submit</button>
+        </form>
+
+        let bottomSection =
+            <ul class="list-group">
+                {this.state.messages.map(message => {
+                    return <li className="list-group-item" key={message.id}>{message.message}</li>
+                })}
+            </ul>
+        return <Jumbotron title="Special Message!"
                           inputRef={this.inputRef}
-                          message={this.state.message}
-                          submitFn={this.sayHello}/>
+                          leadSection={leadSection}
+                          bottomSection={bottomSection}/>
     }
 }

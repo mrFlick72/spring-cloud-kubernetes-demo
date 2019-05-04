@@ -1,5 +1,4 @@
 import React from "react"
-import TextInputForm from "./TextInputForm";
 
 export default ({title, leadSection, bottomSection}) => {
     return <div className="jumbotron">
