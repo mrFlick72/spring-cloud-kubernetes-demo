@@ -11,22 +11,6 @@
 <body>
 
 <div id="app" ></div>
-<!--
-
-
-<div class="jumbotron">
-    <h1 class="display-4">Special Message</h1>
-    <form class="lead">
-        <div class="form-group">
-            <label for="specialMessage">New Special Message</label>
-            <input type="text" class="form-control" id="specialMessage" placeholder="your name">
-        </div>
-        <button type="button" id="submitSpecialMessage" class="btn btn-primary">Submit</button>
-    </form>
-    <hr class="my-4">
-    <ul class="list-group" id="specialMessages"></ul>
-</div>
--->
 
 
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"
@@ -39,23 +23,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-<script>
-    function saveSpecialMessage() {
-        var message = $("#specialMessage").val();
-        $.ajax({
-            method: "POST",
-            url: "/ui/message-service/message",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({"message": message})
-        }).done(function (data) {
-            $("#submitSpecialMessage").text(data)
-        })
-    }
-
-    $("#submitSpecialMessage")
-        .click(saveSpecialMessage)
-
-</script>
 </body>
 </html>

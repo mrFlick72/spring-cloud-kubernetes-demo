@@ -1,5 +1,6 @@
 const SAY_HELLO_TO = (name) => `/ui/hello-service/hello/${name}`;
 const SAVE_A_NEW_MESSAGE = "/ui/message-service/message";
+const DELETE_A_MESSAGE = (messageId) => `/ui/message-service/message/${messageId}`;
 
 export default class MessageRepository {
 
@@ -29,4 +30,11 @@ export default class MessageRepository {
         }).then(response => response.json())
     }
 
+
+    deleteMessage(messageId) {
+        return fetch(DELETE_A_MESSAGE(messageId), {
+            method: "DELETE",
+            credentials: 'same-origin'
+        })
+    }
 }

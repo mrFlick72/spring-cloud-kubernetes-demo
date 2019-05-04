@@ -36,6 +36,13 @@ export default class MessageSiteApp extends React.Component {
             })
     }
 
+    deleteMessage(messageId) {
+        this.messageRepository.deleteMessage(messageId)
+            .then(response => {
+                this.displayMessages()
+            })
+    }
+
     render() {
         let leadSection = <form>
             <TextInputForm inputRef={this.inputRef}
@@ -48,7 +55,12 @@ export default class MessageSiteApp extends React.Component {
         let bottomSection =
             <ul class="list-group">
                 {this.state.messages.map(message => {
-                    return <li className="list-group-item" key={message.id}>{message.message}</li>
+                    return <li className="list-group-item d-flex justify-content-between align-items-center"
+                               key={message.id}>
+                        {message.message}
+                        <span className="badge badge-primary badge-pill"
+                              onClick={this.deleteMessage.bind(this, message.id)}>14</span>
+                    </li>
                 })}
             </ul>
         return <Jumbotron title="Special Message!"
