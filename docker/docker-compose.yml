@@ -5,3 +5,9 @@ services:
     image: springcloud/eureka
     ports:
       - 8761:8761
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - "${MONGO_VOLUME}:/var/lib/mongodb"
