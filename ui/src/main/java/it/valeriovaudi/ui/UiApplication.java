@@ -48,7 +48,7 @@ class SecurityConfig {
         UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("secret")
-                .roles("USER")
+                .roles("ADMIN")
                 .build();
 
         return new MapReactiveUserDetailsService(asList(admin, user));
