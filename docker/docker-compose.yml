@@ -2,10 +2,17 @@ version: "3.0"
 
 services:
   eureka-server:
+    container_name: eureka
     image: springcloud/eureka
     ports:
-      - 8761:8761
+      - "8761:8761"
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
   mongo:
+    container_name: mongo
     image: mongo
     ports:
       - "27017:27017"
