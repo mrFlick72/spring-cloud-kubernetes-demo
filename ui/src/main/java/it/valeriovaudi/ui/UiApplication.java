@@ -1,9 +1,14 @@
 package it.valeriovaudi.ui;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
+import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -24,19 +29,33 @@ public class UiApplication {
 
 }
 
+
+@Data
+@ToString
+@ConfigurationProperties(prefix = "login")
+class LoginPageConfig {
+
+    private String page = "/login";
+
+}
+
+@EnableConfigurationProperties(LoginPageConfig.class)
 @EnableWebFluxSecurity
 class SecurityConfig {
 
-    @Value("${login.page:/login}")
-    private String loginPage;
+    @Autowired
+    private LoginPageConfig loginPageConfig;
 
     @Bean
+    @RefreshScope
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        System.out.println("refresh!");
+        System.out.println(loginPageConfig);
         return http.csrf().disable().authorizeExchange()
                 .pathMatchers("/index.html").hasRole("USER")
                 .pathMatchers("/messages.html").hasRole("ADMIN")
                 .anyExchange().permitAll()
-                .and().formLogin().loginPage(loginPage)
+                .and().formLogin().loginPage(loginPageConfig.getPage())
                 .and().logout()
                 .and().build();
     }

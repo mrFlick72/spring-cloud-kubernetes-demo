@@ -11,6 +11,9 @@ data:
         enabled: true
       ServerListRefreshInterval: 50
 
+    login:
+      page: /ui/login
+
     server:
       use-forward-headers: true
 
