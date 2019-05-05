@@ -12,7 +12,7 @@ data:
       ServerListRefreshInterval: 50
 
     login:
-      page: /ui/login
+      page: login.html
 
     server:
       use-forward-headers: true
@@ -24,11 +24,6 @@ data:
       cloud:
         gateway:
           routes:
-            - id: login
-              uri: http://ui-interface:8080/login
-              predicates:
-                 - Path=/ui/login
-
             - id: hello-service
               uri: lb://hello-service/
               predicates:
