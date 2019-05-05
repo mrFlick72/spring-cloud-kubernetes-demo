@@ -4,6 +4,13 @@ metadata:
   name: ui-interface
 data:
   application.yaml: |-
+    ribbon:
+      eureka:
+        enabled: false
+      client:
+        enabled: true
+      ServerListRefreshInterval: 50
+
     spring:
       cloud:
         gateway:
