@@ -11,18 +11,28 @@ data:
         enabled: true
       ServerListRefreshInterval: 50
 
+    server:
+      use-forward-headers: true
+
     spring:
       redis:
         host: redis-svc
+
       cloud:
         gateway:
           routes:
+            - id: login
+              uri: http://ui-interface:8080/login
+              predicates:
+                 - Path=/ui/login
+
             - id: hello-service
               uri: lb://hello-service/
               predicates:
                 - Path=/hello-service/**
               filters:
                 - StripPrefix=1
+
             - id: message-service
               uri: lb://message-service/
               predicates:
