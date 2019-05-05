@@ -58,8 +58,10 @@ export default class MessageSiteApp extends React.Component {
                     return <li className="list-group-item d-flex justify-content-between align-items-center"
                                key={message.id}>
                         {message.message}
-                        <span className="badge badge-primary badge-pill"
-                              onClick={this.deleteMessage.bind(this, message.id)}>14</span>
+                        <span className="badge badge-danger badge-pill"
+                              onClick={this.deleteMessage.bind(this, message.id)}>
+                            <i className="fas fa-trash-alt fa-lg"></i> Delete
+                        </span>
                     </li>
                 })}
             </ul>
