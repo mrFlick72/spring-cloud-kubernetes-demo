@@ -68,5 +68,11 @@ class MessageRoute(private val messageRepository: MessageRepository) {
                     }
                     .flatMap { noContent().build() }
         }
+
+        DELETE("/message/{messageId}") {
+            val messageId = it.pathVariable("messageId")
+            messageRepository.deleteById(messageId)
+                    .flatMap { noContent().build() }
+        }
     }
 }

@@ -1,0 +1,9 @@
+server:
+  use-forward-headers: true
+  port: 7070
+
+hello-service-uri: http://message-service/message/random
+
+management:
+  server:
+    port: 7071

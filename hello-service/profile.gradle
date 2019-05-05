@@ -1,0 +1,12 @@
+if (project.hasProperty('kubernetes')) {
+    println("kubernetes")
+    dependencies {
+        implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes'
+        implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-config'
+    }
+} else if (project.hasProperty('netflix')) {
+    println("netflix")
+    dependencies {
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    }
+}
