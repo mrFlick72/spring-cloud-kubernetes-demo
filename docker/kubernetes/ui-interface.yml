@@ -13,6 +13,8 @@ data:
 
     login:
       page: login
+      processingUrl: /ui/login
+      successAuthenticationPath: /ui/index.html
 
     server:
       use-forward-headers: true
@@ -100,6 +102,7 @@ metadata:
   name: ui-interface-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "true"
 spec:
   rules:
     - http:
