@@ -63,7 +63,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: hello-service-svc
+  name: hello-service
 spec:
   selector:
     app: hello-service
