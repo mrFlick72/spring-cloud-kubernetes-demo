@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import static java.util.Arrays.asList;
 
@@ -29,6 +31,14 @@ public class UiApplication {
 
 }
 
+@Controller
+class LoginController {
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+}
 
 @Data
 @ToString

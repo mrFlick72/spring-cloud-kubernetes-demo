@@ -12,7 +12,7 @@ data:
       ServerListRefreshInterval: 50
 
     login:
-      page: login.html
+      page: login
 
     server:
       use-forward-headers: true

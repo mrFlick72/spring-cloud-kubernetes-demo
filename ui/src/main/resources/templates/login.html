@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Ui Interface</title>
@@ -14,8 +14,8 @@
 
     <div class="row">
         <div class="col-12">
-            <form action="login" method="post">
-                <div class="form-group">
+            <form th:action="@{login}" method="post">
+                    <div class="form-group">
                     <label for="username"><i class="fas fa-envelope fa-lg"></i> Mail: </label>
                     <input name="username" id="username" type="text" class="form-control"/>
                 </div>
