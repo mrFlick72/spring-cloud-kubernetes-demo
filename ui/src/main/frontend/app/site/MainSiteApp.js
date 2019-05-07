@@ -2,6 +2,8 @@ import React from "react"
 import Jumbotron from "../component/Jumbotron";
 import MessageRepository from "../repository/MessageRepository";
 import TextInputForm from "../component/TextInputForm";
+import NavBar from "../component/NavBar";
+import Container from "../component/Container";
 
 export default class MainSiteApp extends React.Component {
 
@@ -33,10 +35,15 @@ export default class MainSiteApp extends React.Component {
         </form>
         let bottomSection = <p>{this.state.message}</p>
 
-        return <Jumbotron title="Hello, world!"
-                          inputRef={this.inputRef}
-                          leadSection={leadSection}
-                          bottomSection={bottomSection}
-                          message={this.state.message}/>
+        return <React.Fragment>
+            <NavBar title="Message Managment"/>
+            <Container>
+                <Jumbotron title="Hello, world!"
+                           inputRef={this.inputRef}
+                           leadSection={leadSection}
+                           bottomSection={bottomSection}
+                           message={this.state.message}/>
+            </Container>
+        </React.Fragment>
     }
 }

@@ -2,6 +2,8 @@ import React from "react"
 import Jumbotron from "../component/Jumbotron";
 import MessageRepository from "../repository/MessageRepository";
 import TextInputForm from "../component/TextInputForm";
+import NavBar from "../component/NavBar";
+import Container from "../component/Container";
 
 export default class MessageSiteApp extends React.Component {
 
@@ -65,9 +67,14 @@ export default class MessageSiteApp extends React.Component {
                     </li>
                 })}
             </ul>
-        return <Jumbotron title="Special Message!"
-                          inputRef={this.inputRef}
-                          leadSection={leadSection}
-                          bottomSection={bottomSection}/>
+        return <React.Fragment>
+            <NavBar title="Message Managment"/>
+            <Container>
+                <Jumbotron title="Special Message!"
+                           inputRef={this.inputRef}
+                           leadSection={leadSection}
+                           bottomSection={bottomSection}/>
+            </Container>
+        </React.Fragment>
     }
 }
