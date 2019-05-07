@@ -18,7 +18,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: message-service-deployment
+  name: message-service
   labels:
     app: message-service
 spec:

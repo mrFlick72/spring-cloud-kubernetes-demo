@@ -39,7 +39,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui-interface-deployment
+  name: ui-interface
   labels:
     app: ui-interface
 spec:

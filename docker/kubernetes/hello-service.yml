@@ -19,7 +19,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-service-deployment
+  name: hello-service
   labels:
     app: hello-service
 spec:
