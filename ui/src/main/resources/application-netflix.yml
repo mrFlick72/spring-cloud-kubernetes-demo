@@ -5,12 +5,12 @@ spring:
         - id: hello-service
           uri: lb://hello-service/
           predicates:
-            - Path=/ui/hello-service/**
+            - Path=/hello-service/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: message-service
           uri: lb://message-service/
           predicates:
-            - Path=/ui/message-service/**
+            - Path=/message-service/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
