@@ -26,6 +26,6 @@ cd $MESSAGE_SERVICE_JAR_DIR
 java -jar -Dspring.profiles.active=netflix message-service.jar >$PROJECT_HOME/message-service.log &
 
 
-#echo "start of ui"
-#cd $UI_JAR_DIR
-#java -jar -Dspring.profiles.active=netflix ui-interface.jar >$PROJECT_HOME/ui-interface.log &
+echo "start of ui"
+cd $UI_JAR_DIR
+java -jar -Dspring.profiles.active=netflix ui-interface.jar >$PROJECT_HOME/ui-interface.log &
