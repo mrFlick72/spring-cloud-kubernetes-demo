@@ -6,6 +6,7 @@ without change one line of code. In particular this application can run on Sprin
 only availing only on profiled Maven/Gradle build and Spring profile.
 
 ## The use case
+
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
 load balancing client side and configuration management. The web front end application is composed by two pages under security:
   * web page for the standard user in order to get a special hello with a randomic special message for you, 
@@ -20,29 +21,36 @@ load balancing client side and configuration management. The web front end appli
  
 ## The technology stack
 
-One of the goal of this spike was to show how using the Spring Cloud abstraction in order to switch from Spring Cloud Netflix to Spring Cloud Kubernetes and viceversa, 
-without change one line of code. How do that?.
+In this project you can see used many technologies like:
 
-First of all let me the technology involved:
-
-* Spring Cloud Gateway
+* Spring Cloud Gateway: the reactive Spring counterpart of Zuul, build on Spring 5.x and Webflux
 * Spring Cloud Netflix Eureka for Service Discovery 
 * Spring Cloud Kubernetes
 * Spring Cloud Ribbon 
-    * Spring Cloud Kubernetes Ribbon, load balancing client
-    * Spring Cloud Netflix Ribbon, load balancing client
-* Spring Reactive Mongo
+    * Spring Cloud Kubernetes Ribbon: used in order to achieve client load balancing
+    * Spring Cloud Netflix Ribbon: used in order to achieve client load balancing
+* Spring Reactive Data Mongo
 * Spring WebFlux
 * Spring Boot 2.1.x
-
-The magic is behind profiled build and Spring profile. With profiled build we assurance that the dependencies in the classpath will be correct, 
-with spring profile we assurance that the configuration for spring cloud netflix are enabled only if we want run our application on Spring Cloud Netflix,
-while fro kubernetes in this case we will use the k8s config map.
-
+* Spring Session
+* Spring Reactive Security
+* Java/Kotlin
 
 
-## How it works with Spring Cloud Netflix
+## How it works 
+The magic is behind profiled build and Spring profile. With profiled build, we guarantee that dependencies in the classpath will be correct, 
+with spring profile we guarantee that the configuration for spring cloud netflix are enabled only if we want run our application on Spring Cloud Netflix,
+while fro kubernetes, in this case, we will use the k8s config map.
 
-## How it works with Spring Cloud Kubernetes
+Since that we need of Redis for distributed session storage, Mongo as datastore and Eureka for Spring Cloud Netflix the project will provide a docker-compose.yml
+capable of provide all for you, The only thing that you have to do is define an .env file with the path for mongo volume. For K8s in the kubernetes subfolder there are all the 
+ needed .yaml file.
+
+In order to build the application the commands are: for gradle projects hello-service and message-service: 
+gradle build -Pnetflix while for maven ui-interface project mvn clean install -Pnetflix for enable Spring Cloud Netflix and the same command but with -Pkubernetes for kubernetes
+ 
+Kor Spring cloud Netflix, the project provide a sh script file under docker folder called `start.sh`, capable to start all the needed: docker-compose for redis, mongo ed eureka and all the three applications.
+ For try the application with Spring Cloud Kubernetes it is possible apply via `kubectl` all the .yml file under docker/kubernetes folder and the application is ready to be deployed.
+
 
 ## Conclusion
