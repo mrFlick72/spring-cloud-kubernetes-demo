@@ -11,15 +11,15 @@ load balancing client side and configuration management. The web front end appli
   * web page for the standard user in order to get a special hello with a randomic special message for you, 
   * web page for admin user in order to managing the special message list. 
  
- Web Application for simple user screenshot
+ ### Web Application for simple user screenshot
  ![Simple User Web App](/images/user_webapp.png)
  
  
- Web Application for admin user screenshot
+ ### Web Application for admin user screenshot
  ![Admin Web App](/images/messages_webapp.png)
  
 ## The technology stack
-One of the goal of this spike was to show how using the Spring Cloud abstraction in order to swich from Spring CLoud Netflix to Spring Cloud Kubernetes and viceversa, 
+One of the goal of this spike was to show how using the Spring Cloud abstraction in order to swich from Spring Cloud Netflix to Spring Cloud Kubernetes and viceversa, 
 without change one line of code. How do that? 
 
 ## How it works with Spring Cloud Netflix
