@@ -19,8 +19,27 @@ load balancing client side and configuration management. The web front end appli
  ![Admin Web App](/images/messages_webapp.png)
  
 ## The technology stack
-One of the goal of this spike was to show how using the Spring Cloud abstraction in order to swich from Spring Cloud Netflix to Spring Cloud Kubernetes and viceversa, 
-without change one line of code. How do that? 
+
+One of the goal of this spike was to show how using the Spring Cloud abstraction in order to switch from Spring Cloud Netflix to Spring Cloud Kubernetes and viceversa, 
+without change one line of code. How do that?.
+
+First of all let me the technology involved:
+
+* Spring Cloud Gateway
+* Spring Cloud Netflix Eureka for Service Discovery 
+* Spring Cloud Kubernetes
+* Spring Cloud Ribbon 
+** Spring Cloud Kubernetes Ribbon, load balancing client
+** Spring Cloud Netflix Ribbon, load balancing client
+* Spring Reactive Mongo
+* Spring WebFlux
+* Spring Boot 2.1.x
+
+The magic is behind profiled build and Spring profile. With profiled build we assurance that the dependencies in the classpath will be correct, 
+with spring profile we assurance that the configuration for spring cloud netflix are enabled only if we want run our application on Spring Cloud Netflix,
+while fro kubernetes in this case we will use the k8s config map.
+
+
 
 ## How it works with Spring Cloud Netflix
 
