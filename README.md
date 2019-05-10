@@ -29,8 +29,8 @@ First of all let me the technology involved:
 * Spring Cloud Netflix Eureka for Service Discovery 
 * Spring Cloud Kubernetes
 * Spring Cloud Ribbon 
-** Spring Cloud Kubernetes Ribbon, load balancing client
-** Spring Cloud Netflix Ribbon, load balancing client
+    * Spring Cloud Kubernetes Ribbon, load balancing client
+    * Spring Cloud Netflix Ribbon, load balancing client
 * Spring Reactive Mongo
 * Spring WebFlux
 * Spring Boot 2.1.x
