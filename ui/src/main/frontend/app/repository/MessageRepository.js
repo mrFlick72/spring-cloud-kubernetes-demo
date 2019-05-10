@@ -1,6 +1,6 @@
 const SAY_HELLO_TO = (name) => `/hello-service/hello/${name}`;
 const SAVE_A_NEW_MESSAGE = "/message-service/message";
-const DELETE_A_MESSAGE = (messageId) => `/ui/message-service/message/${messageId}`;
+const DELETE_A_MESSAGE = (messageId) => `/message-service/message/${messageId}`;
 
 export default class MessageRepository {
 
