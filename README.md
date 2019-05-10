@@ -10,7 +10,7 @@ The sample application is a very simple hello world web application. This applic
 load balancing client side and configuration management. The web front end application is composed by two pages under security:
   * web page for the standard user in order to get a special hello with a randomic special message for you, 
   * web page for admin user in order to managing the special message list. 
- ![Simple User Web App]()
+ ![Simple User Web App](/images/messages_webapp.png)
 ## The technology stack
 One of the goal of this spike was to show how using the Spring Cloud abstraction in order to swich from Spring CLoud Netflix to Spring Cloud Kubernetes and viceversa, 
 without change one line of code. How do that? 
