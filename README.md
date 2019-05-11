@@ -13,11 +13,11 @@ load balancing client side and configuration management. The web front end appli
   * web page for admin user in order to managing the special message list. 
  
  ### Web Application for simple user screenshot
- ![Simple User Web App](/images/user_webapp.png)
+ ![Simple User Web App]( ![Simple User Web App](https://github.com/mrFlick72/spring-cloud-kubernetes-demo/blob/master/images/user_webapp.png)
  
  
  ### Web Application for admin user screenshot
- ![Admin Web App](/images/messages_webapp.png)
+ ![Admin Web App](https://github.com/mrFlick72/spring-cloud-kubernetes-demo/blob/master/images/messages_webapp.png)
  
 ## The technology stack
 
