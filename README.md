@@ -102,7 +102,7 @@ class HelloService {
 ```
 
 The application.yml configuration provided via config map for kubernetes profile and application-netflix.yml for netflix profile. The benefit of use configmap 
-with kubernetes is that configuring restart actuator endpoint and spring cloud kubernetes configuration in the bootstrap.yml we can benefit of a config hot reload 
+with kubernetes is that configuring restart actuator endpoint with spring cloud kubernetes configuration in the bootstrap.yml we can benefit of a config hot reload 
 via application context restart.
 
 The application is totally reactive and no blocking io, it involved: 
