@@ -38,6 +38,82 @@ In this project you can see used many technologies like:
 
 
 ## How it works 
+
+Basically on the UI thankful to Spring Cloud Gateway, similarity to Zuul, we can configure a micro proxy between ui-interface and the backend services.  All the magic 
+is performed by the yml configuration, even if in any talk on Spring Cloud Gateway probably you can see the java config way in this example I preferred yml config in order to 
+can benefit of hot reload route. The configured routes will be useful to get the hello message on the main web application and create or delete special messages on the 
+message web application accessed by admin users. the snippet of code that implements this magic is liek below:
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: hello-service
+          uri: lb://hello-service/
+          predicates:
+            - Path=/hello-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: message-service
+          uri: lb://message-service/
+          predicates:
+            - Path=/message-service/**
+          filters:
+            - StripPrefix=1
+```
+
+On hello-service, instead the integration with message-service is performed by a classic rest service call using a WebClient.Builder annotated with @LoadBalanced in order to 
+benefit of the LoadBalancerExchangeFilterFunction injected by spring for us. The configuration is very simple and the usage is a classical rest service call via WebClient:
+
+#### load balancer confguration 
+```java
+   @SpringBootApplication
+   public class HelloServiceApplication {
+   
+       public static void main(String[] args) {
+           SpringApplication.run(HelloServiceApplication.class, args);
+       }
+   
+   
+       @Bean
+       @LoadBalanced
+       public WebClient.Builder loadBalancedWebClientBuilder() {
+           return WebClient.builder();
+       }
+   }
+```
+#### service integration
+
+```java
+
+@Slf4j
+@Service
+class HelloService {
+
+    ...
+
+    Mono<String> sayHello(String name) {
+        return webClientBuilder.build().get()
+                .uri(helloServiceUri)
+                .retrieve()
+                .bodyToMono(HashMap.class)
+                .flatMap(payload -> just(format(TEMPLATE, name, INSTANCE_ID, payload.getOrDefault("message", DEFAULT_MESSAGE))));
+    }
+}
+```
+
+The application.yml configuration provided via config map for kubernetes profile and application-netflix.yml for netflix profile. The benefit of use configmap 
+with kubernetes is that configuring restart actuator endpoint and spring cloud kubernetes configuration in the bootstrap.yml we can benefit of a config hot reload 
+via application context restart.
+
+The application is totally reactive and no blocking io, it involved: Spring Cloud Gateway instead of Zuul, Spring WebFlux instead of a classical Spring MVC, 
+Spring Data Reactive Mongo instead of Spring Data Mongo and WebClient instead of a plain RestTemplate. Another point of actention may be the usage of Spring Session
+ on Redis for in order to achieve a totally scalable application, without sticky session or something like that.
+
+## How build the project
+
 The magic is behind profiled build and Spring profile. With profiled build, we guarantee that dependencies in the classpath will be correct, 
 with spring profile we guarantee that the configuration for spring cloud netflix are enabled only if we want run our application on Spring Cloud Netflix,
 while fro kubernetes, in this case, we will use the k8s config map.
