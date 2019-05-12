@@ -71,12 +71,10 @@ benefit of the LoadBalancerExchangeFilterFunction injected by spring for us. The
 ```java
    @SpringBootApplication
    public class HelloServiceApplication {
-   
-       public static void main(String[] args) {
-           SpringApplication.run(HelloServiceApplication.class, args);
-       }
-   
-   
+    
+        ...
+        
+        
        @Bean
        @LoadBalanced
        public WebClient.Builder loadBalancedWebClientBuilder() {
