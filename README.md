@@ -73,8 +73,7 @@ benefit of the LoadBalancerExchangeFilterFunction injected by spring for us. The
    public class HelloServiceApplication {
     
         ...
-        
-        
+       
        @Bean
        @LoadBalanced
        public WebClient.Builder loadBalancedWebClientBuilder() {
@@ -106,8 +105,14 @@ The application.yml configuration provided via config map for kubernetes profile
 with kubernetes is that configuring restart actuator endpoint and spring cloud kubernetes configuration in the bootstrap.yml we can benefit of a config hot reload 
 via application context restart.
 
-The application is totally reactive and no blocking io, it involved: Spring Cloud Gateway instead of Zuul, Spring WebFlux instead of a classical Spring MVC, 
-Spring Data Reactive Mongo instead of Spring Data Mongo and WebClient instead of a plain RestTemplate. Another point of actention may be the usage of Spring Session
+The application is totally reactive and no blocking io, it involved: 
+
+* Spring Cloud Gateway instead of Zuul
+* Spring WebFlux instead of a classical Spring MVC 
+* Spring Data Reactive Mongo instead of Spring Data Mongo 
+* WebClient instead of a plain RestTemplate 
+
+Another point of actention may be the usage of Spring Session
  on Redis for in order to achieve a totally scalable application, without sticky session or something like that.
 
 ## How build the project
