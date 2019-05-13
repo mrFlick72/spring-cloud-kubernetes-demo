@@ -147,3 +147,22 @@ User "system:serviceaccount:default:default" cannot get resource "endpoints" in 
 ```
 
 ## Conclusion
+
+Now!, what street choose?, Spring Cloud Netflix or Spring Cloud Kubernetes? Of course the right answer is it depends! 
+
+With Spring Cloud abstraction you can achieve service discovery, client side load balancing and configuration load in a Netflix or Kubernetes environment without 
+change one line of code, giving you the possibility to choose later the your way: K8S or not to K8S. Said that the choice depends form 
+requirements, infrastructure already on place and many other concern. The my impression is: very cool the possibility of choose later and test in local or in the cloud with 
+Netflix or on K8s with the assurance that the application behaviour will be near the same, I have particularly appreciated the simple hot reload of application configuration on K8s.
+But on the other hands using Spring Cloud Kubernetes for service discovery and load balancing client that are the main features exposed by Spring Cloud Kubernetes, 
+is an overkill especially considering that those features that are already built in in K8s. 
+Moreover considering that the application have to talk with the master for applying the api, it can be quite dangerous due to too much knowledge on the application of infrastructure 
+and the risk of coupling your application framework with the infrastructure it is a bad thing, the power is choose later not copling for ever to a platform. 
+
+At the end if your application run on a public cloud provider use Spring Cloud Netflix can be a very convenient choice otherwise use Kubernetes may be a real popular and farsighted choice, 
+especially considering the real cool project puggable on top of Kubernetes like Istio, Knative and considering that more and more providers are adopting Kubernetes, 
+AWS EKS, Google Cloud GKE, Pivotal PKS and many other are an example.
+
+Unfortunately there not exist a correct answer exist only use case in wich a choice fit or not. Like in many use case the 
+possibility of choice later and fast adopting a new way that is more capable for embrace business changing is a winner choice. 
+In this direction Spring Cloud win due to give us the possibility to choose later if adopting Netflix or Kubernetes at any time and go up and forward in any time. 
