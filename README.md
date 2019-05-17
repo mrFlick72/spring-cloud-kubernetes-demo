@@ -171,5 +171,4 @@ AWS EKS, Google Cloud GKE, Pivotal PKS and many other are an example.
 Unfortunately there not exist a correct answer, there exist only use case in wich a choice fit or not. Like in many use case the 
 possibility of choice later and fast adopting a new way that is more capable for embrace business changing is a winner choice. 
 
-In this direction, in my opinion, Spring Cloud win due to give us the possibility to choose later if adopting Netflix or Kubernetes at any time and go up and forward in any time, 
-without to forget other 12 factors that your application can implements tanks to Spring Cloud helping you to implement a Cloud Native application!. 
+In this direction, in my opinion, Spring Cloud win due to give us the possibility to choose later if adopting Netflix or Kubernetes at any time and go up and forward in any time.
