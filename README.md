@@ -10,8 +10,8 @@ only availing on profiled Maven/Gradle build and Spring profile.
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
 client load balancing and configuration management. The web main application is composed by two pages under security:
   * a web page for standard users in order to get a special hello with a randomic special message for you 
-  * a web page for admin usera in order to managing the special message list. 
-  * there ecist a prebuild user for both web application
+  * a web page for admin user in order to manage the special message list. 
+  * there exist a prebuild user for both web application
     * user name user and password secret for /index.html web application 
     * user name admin and password secret for /messages.html web application
  
