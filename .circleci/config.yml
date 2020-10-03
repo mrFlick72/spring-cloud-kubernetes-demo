@@ -1,0 +1,40 @@
+version: 2.1
+
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202008-01
+      docker_layer_caching: true
+
+    steps:
+      - run:
+          name: Install OpenJDK 11
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-11-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+            java -version
+
+      - checkout
+
+      - run:
+          name: docker login
+          command: |
+            mvn clean install docker:build docker push -Pkubernetes
+
+      - run:
+          name: build ui service
+          command: |
+            cd ui
+            mvn clean install docker:build docker:push -Pkubernetes
+
+      - run:
+          name: build ui service
+          command: |
+            ../hello-service
+            ./gradlew build docker dockerPush -Pkubernetes
+      - run:
+          name: build ui service
+          command: |
+            ../message-service
+            ./gradlew build docker dockerPush  -Pkubernetes
