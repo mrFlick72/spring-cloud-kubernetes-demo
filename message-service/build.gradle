@@ -1,7 +1,7 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.21'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.72'
 
     id "com.palantir.docker" version "0.21.0"
 }
@@ -10,14 +10,14 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'it.valeriovaudi'
 //version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    set('springCloudVersion', 'Greenwich.SR1')
+    set('springCloudVersion', 'Hoxton.SR8')
 }
 
 dependencies {
@@ -45,14 +45,14 @@ dependencyManagement {
 compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
         freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 }
 

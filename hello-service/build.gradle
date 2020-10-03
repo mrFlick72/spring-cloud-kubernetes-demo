@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'java'
 
     id "com.palantir.docker" version "0.21.0"
@@ -20,7 +20,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', 'Greenwich.SR1')
+    set('springCloudVersion', 'Hoxton.SR8')
 }
 
 dependencies {
