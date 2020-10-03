@@ -20,7 +20,7 @@ jobs:
       - run:
           name: docker login
           command: |
-            mvn clean install docker:build docker push -Pkubernetes
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
       - run:
           name: build ui service
