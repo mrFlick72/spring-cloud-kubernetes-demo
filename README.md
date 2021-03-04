@@ -119,6 +119,7 @@ In this spike I will use minikube like k8s local environment. In order to speed 
 you can use this command:
 ```minikube start --vm-driver=virtualbox --cpus 4 --memory 8192 -p spring-cloud-k8s```
 
+Remember to enable ingress with this command: ```minikube addons enable ingress -p spring-cloud-k8s```
 In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests under kubernetes folder.
 
 Pay attention before to install all k8s descriptors is needed to apply a command like this: `kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=default:default` 
