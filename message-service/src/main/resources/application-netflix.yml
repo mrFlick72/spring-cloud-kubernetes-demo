@@ -1,7 +1,0 @@
-server:
-  use-forward-headers: true
-  port: 9090
-
-management:
-  server:
-    port: 9091
