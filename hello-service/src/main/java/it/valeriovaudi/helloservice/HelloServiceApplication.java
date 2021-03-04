@@ -47,15 +47,15 @@ class HelloService {
     private static final String INSTANCE_ID = UUID.randomUUID().toString();
 
     private final String helloServiceUri;
-    private final WebClient.Builder webClientBuilder;
+    private final WebClient webClientBuilder;
 
     HelloService(@Value("${hello-service-uri:}") String helloServiceUri, WebClient.Builder webClientBuilder) {
         this.helloServiceUri = helloServiceUri;
-        this.webClientBuilder = webClientBuilder;
+        this.webClientBuilder = webClientBuilder.build();
     }
 
     Mono<String> sayHello(String name) {
-        return webClientBuilder.build().get()
+        return webClientBuilder.get()
                 .uri(helloServiceUri)
                 .retrieve()
                 .bodyToMono(HashMap.class)
