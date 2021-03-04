@@ -24,9 +24,9 @@ jobs:
           name: build ui service
           command: |
             cd hello-service
-            ./gradlew build docker dockerPush -Pkubernetes
+            ./gradlew build docker dockerPush
       - run:
           name: build ui service
           command: |
             cd message-service
-            ./gradlew build docker dockerPush  -Pkubernetes
+            ./gradlew build docker dockerPush
