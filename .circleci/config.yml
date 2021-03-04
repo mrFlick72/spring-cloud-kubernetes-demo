@@ -21,12 +21,12 @@ jobs:
             mvn clean install docker:build docker:push
 
       - run:
-          name: build ui service
+          name: build hello-service
           command: |
             cd hello-service
             ./gradlew build docker dockerPush
       - run:
-          name: build ui service
+          name: build message-service
           command: |
             cd message-service
             ./gradlew build docker dockerPush
