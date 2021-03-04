@@ -4,8 +4,6 @@ metadata:
   name: ui-interface
 data:
   application.yaml: |-
-    spring.cloud.kubernetes.discovery.all-namespaces: true
-
     server:
       use-forward-headers: true
 

@@ -6,7 +6,6 @@ metadata:
     app: message-service
 data:
   application.yml: |-
-    spring.cloud.kubernetes.discovery.all-namespaces: true
     spring:
       data:
         mongodb:

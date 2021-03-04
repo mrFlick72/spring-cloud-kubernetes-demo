@@ -6,7 +6,6 @@ metadata:
     app: hello-service
 data:
   application.yaml: |-
-    spring.cloud.kubernetes.discovery.all-namespaces: true
     hello-service-uri: http://message-service/message/random
 
 ---
