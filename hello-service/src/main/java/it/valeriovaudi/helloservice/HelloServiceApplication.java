@@ -30,11 +30,10 @@ public class HelloServiceApplication {
         SpringApplication.run(HelloServiceApplication.class, args);
     }
 
-
     @Bean
     @LoadBalanced
-    public WebClient.Builder loadBalancedWebClientBuilder() {
-        return WebClient.builder();
+    public WebClient webClient() {
+        return WebClient.builder().build();
     }
 }
 
@@ -47,15 +46,15 @@ class HelloService {
     private static final String INSTANCE_ID = UUID.randomUUID().toString();
 
     private final String helloServiceUri;
-    private final WebClient.Builder webClientBuilder;
+    private final WebClient webClient;
 
-    HelloService(@Value("${hello-service-uri:}") String helloServiceUri, WebClient.Builder webClientBuilder) {
+    HelloService(@Value("${hello-service-uri:}") String helloServiceUri, WebClient webClient) {
         this.helloServiceUri = helloServiceUri;
-        this.webClientBuilder = webClientBuilder;
+        this.webClient = webClient;
     }
 
     Mono<String> sayHello(String name) {
-        return webClientBuilder.build().get()
+        return webClient.get()
                 .uri(helloServiceUri)
                 .retrieve()
                 .bodyToMono(HashMap.class)

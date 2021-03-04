@@ -5,6 +5,11 @@ Here I will show how, using the Spring Cloud Abstraction, it is very easy to swi
 without change one line of code. In particular this application can run on Spring Cloud Netflix and the latest Spring Cloud Kubernetes 
 only availing on profiled Maven/Gradle build and Spring profile.
 
+# Environments requirements
+In this spike I will use minikube like k8s local environment. In order to speed up a fresh minikube instance for this purpose
+you can use this commnad:
+```minikube start --vm-driver=virtualbox --cpus 4 --memory 8192 -p spring-cloud-k8s```
+
 ## The use case
 
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
