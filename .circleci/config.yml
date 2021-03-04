@@ -18,7 +18,7 @@ jobs:
           name: build ui service
           command: |
             cd ui
-            mvn clean install docker:build docker:push -Pkubernetes
+            mvn clean install docker:build docker:push
 
       - run:
           name: build ui service
