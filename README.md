@@ -5,20 +5,15 @@ Here I will show how, using the Spring Cloud Abstraction, it is very easy to swi
 without change one line of code. In particular this application can run on Spring Cloud Netflix and the latest Spring Cloud Kubernetes 
 only availing on profiled Maven/Gradle build and Spring profile.
 
-# Environments requirements
-In this spike I will use minikube like k8s local environment. In order to speed up a fresh minikube instance for this purpose
-you can use this commnad:
-```minikube start --vm-driver=virtualbox --cpus 4 --memory 8192 -p spring-cloud-k8s```
-
 ## The use case
 
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
 client load balancing and configuration management. The web main application is composed by two pages under security:
-  * a web page for standard users in order to get a special hello with a randomic special message for you 
+  * a web page for standard users in order to get a special hello with a random special message for you 
   * a web page for admin user in order to manage the special message list. 
-  * there exist a prebuild user for both web application
-    * user name user and password secret for /index.html web application 
-    * user name admin and password secret for /messages.html web application
+  * there exist a prebuilt user for both web application
+    * username user and password secret for /index.html web application 
+    * username admin and password secret for /messages.html web application
  
  ### Web Application for simple user screenshot
  ![](https://raw.githubusercontent.com/mrFlick72/spring-cloud-kubernetes-demo/master/images/user_webapp.png)
@@ -32,11 +27,8 @@ client load balancing and configuration management. The web main application is 
 In this project you can see used many technologies like:
 
 * Spring Cloud Gateway: the reactive Spring counterpart of Zuul, build on Spring 5.x and Webflux
-* Spring Cloud Netflix Eureka for Service Discovery 
 * Spring Cloud Kubernetes
-* Spring Cloud Ribbon 
-    * Spring Cloud Kubernetes Ribbon: used in order to achieve client load balancing
-    * Spring Cloud Netflix Ribbon: used in order to achieve client load balancing
+* Spring Cloud LoadBalancer
 * Spring Reactive Data Mongo
 * Spring WebFlux
 * Spring Boot 2.1.x
@@ -81,12 +73,12 @@ benefit of the *LoadBalancerExchangeFilterFunction* injected by spring for us. T
    public class HelloServiceApplication {
     
         ...
-       
-       @Bean
-       @LoadBalanced
-       public WebClient.Builder loadBalancedWebClientBuilder() {
-           return WebClient.builder();
-       }
+
+        @Bean
+        @LoadBalanced
+        public WebClient webClient() {
+            return WebClient.builder().build();
+        }
    }
 ```
 #### service integration
@@ -100,7 +92,7 @@ class HelloService {
     ...
 
     Mono<String> sayHello(String name) {
-        return webClientBuilder.build().get()
+        return webClientBuilder.get()
                 .uri(helloServiceUri)
                 .retrieve()
                 .bodyToMono(HashMap.class)
@@ -123,24 +115,13 @@ The application is totally reactive and no blocking io. It involved:
 Another point of attention may be the usage of Spring Session on Redis for in order to achieve a totally scalable application, without sticky session or something like that.
 
 ## How build the project
+In this spike I will use minikube like k8s local environment. In order to speed up a fresh minikube instance for this purpose
+you can use this command:
+```minikube start --vm-driver=virtualbox --cpus 4 --memory 8192 -p spring-cloud-k8s```
 
-The magic is behind profiled build and Spring profile. With profiled build, we guarantee that all the dependencies in the classpath will be correct, 
-with spring profile we guarantee that the configuration for spring cloud netflix are enabled only if we want run our application on Spring Cloud Netflix,
-while fro kubernetes, in this case, we will use the k8s configmap.
+In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests under kubernetes folder.
 
-Since that we need of Redis for distributed session storage, Mongo as data store and Eureka for Spring Cloud Netflix the project will provide a docker-compose.yml
-capable of provide all for you, The only thing that you have to do is define an .env file with the path for mongo volume. For K8s in the kubernetes subfolder there are all the 
- needed .yml file.
-
-In order to build the application the commands are: for gradle projects hello-service and message-service: 
-gradle build -Pnetflix, while for maven ui-interface project mvn clean install -Pnetflix for enable Spring Cloud Netflix.
- In order to buld applications for kubernetes the buld command ar ethe same of netflix but of course with -Pkubernetes for kubernetes instead of -Pnetflix
- 
-For Spring Cloud Netflix, the project provide a sh script file under docker folder called `start.sh`. 
-This script is capable to start all the needed: docker-compose for redis, mongo ed eureka and all the three applications.
-
-In order to try the system with Spring Cloud Kubernetes instead, it is possible apply via `kubectl` all the .yml file under *docker/kubernetes* folder and the application will be ready to be deployed.
- Of course you can deploy it under minikube, the only thing that you should remember is to apply a command like this: `kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=default:default` 
+Pay attention before to install all k8s descriptors is needed to apply a command like this: `kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=default:default` 
  The command is needed due to Spring Cloud Kubernetes interacts with Kubernetes api, without run this command you will get an error like below: 
 ```
 There was an unexpected error (type=Internal Server Error, status=500).
