@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
+  namespace: spring-cloud-kubernetes-demo
 spec:
   replicas: 1
   selector:
@@ -25,6 +26,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: redis-svc
+  namespace: spring-cloud-kubernetes-demo
 spec:
   selector:
     app: redis

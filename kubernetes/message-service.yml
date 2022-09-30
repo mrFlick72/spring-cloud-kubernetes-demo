@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: message-service
+  namespace: spring-cloud-kubernetes-demo
   labels:
     app: message-service
 data:
@@ -19,6 +20,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: message-service
+  namespace: spring-cloud-kubernetes-demo
   labels:
     app: message-service
 spec:
@@ -63,6 +65,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: message-service
+  namespace: spring-cloud-kubernetes-demo
 spec:
   selector:
     app: message-service

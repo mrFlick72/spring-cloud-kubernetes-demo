@@ -2,6 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
 data:
   application.yaml: |-
     server:
@@ -33,6 +34,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
   labels:
     app: ui-interface
 spec:
@@ -76,6 +78,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
 spec:
   selector:
     app: ui-interface
@@ -88,6 +91,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ui-interface-ingress
+  namespace: spring-cloud-kubernetes-demo
 spec:
   rules:
     - http:
