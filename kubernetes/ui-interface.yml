@@ -6,7 +6,7 @@ metadata:
 data:
   application.yaml: |-
     server:
-      use-forward-headers: true
+      forward-headers-strategy: framework
 
     spring:
       redis:
@@ -104,3 +104,34 @@ spec:
                 port:
                   number: 8080
       host: spring-cloud-kubernetes-demo.com
+  tls:
+    - secretName: vvaudi-lab.com-letsencrypt
+      hosts:
+        - spring-cloud-kubernetes-demo.vvaudi-lab.com
+---
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: spring-cloud-kubernetes-demo
+  name: namespace-reader
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "pods", "services", "endpoints", "secrets"]
+    verbs: ["get", "list", "watch"]
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: namespace-reader-binding
+  namespace: spring-cloud-kubernetes-demo
+subjects:
+  - kind: ServiceAccount
+    name: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: namespace-reader
+  apiGroup: ""
