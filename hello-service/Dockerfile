@@ -6,4 +6,4 @@ WORKDIR /usr/local/hello-service/
 
 EXPOSE 8080
 
-CMD ["java", "-Xms512m", "-Xmx1g", "-jar", "hello-service.jar"]
+CMD ["java", "-jar", "hello-service.jar"]

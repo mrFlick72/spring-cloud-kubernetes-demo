@@ -6,4 +6,4 @@ WORKDIR /usr/local/ui-interface/
 
 EXPOSE 8080
 
-CMD ["java", "-Xms512m", "-Xmx1g", "-jar", "ui-interface.jar"]
+CMD ["java", "-jar", "ui-interface.jar"]
