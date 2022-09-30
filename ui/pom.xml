@@ -17,6 +17,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <snakeyaml.version>1.32</snakeyaml.version>
     </properties>
 
     <dependencies>
@@ -33,8 +34,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
