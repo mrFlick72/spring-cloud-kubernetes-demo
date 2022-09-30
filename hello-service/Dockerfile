@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-ADD hello-service.jar /usr/local/hello-service/
+ADD build/libs/hello-service.jar /usr/local/hello-service/
 
 WORKDIR /usr/local/hello-service/
 
