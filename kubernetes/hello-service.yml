@@ -36,6 +36,7 @@ spec:
       containers:
         - name: hello-service
           image: mrflick72/hello-service:revamp
+          pullPolicy: Always
           ports:
             - containerPort: 8080
 
