@@ -93,6 +93,11 @@ kind: Ingress
 metadata:
   name: ui-interface-ingress
   namespace: spring-cloud-kubernetes-demo
+  annotations:
+    kubernetes.io/ingress.class: "haproxy"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: vvaudi-lab.com-letsencrypt
+
 spec:
   rules:
     - http:
