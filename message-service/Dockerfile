@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:17
 
 ADD build/libs/message-service.jar /usr/local/message-service/
 

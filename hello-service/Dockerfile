@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:17
 
 ADD build/libs/hello-service.jar /usr/local/hello-service/
 
