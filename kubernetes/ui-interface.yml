@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
         - name: ui-interface
-          image: mrflick72/ui-interface:latest
+          image: mrflick72/ui-interface:revamp
           ports:
             - containerPort: 8080
           livenessProbe:
@@ -103,3 +103,4 @@ spec:
                 name: ui-interface
                 port:
                   number: 8080
+      host: spring-cloud-kubernetes-demo.com
