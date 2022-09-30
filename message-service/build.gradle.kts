@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
@@ -5,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.6.21"
 }
 
-group = 'it.valeriovaudi'
+group = "it.valeriovaudi"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -16,20 +18,17 @@ extra["springCloudVersion"] = "2021.0.4"
 
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter'
+    implementation("org.springframework.cloud:spring-cloud-starter")
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-all'
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-all")
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 
