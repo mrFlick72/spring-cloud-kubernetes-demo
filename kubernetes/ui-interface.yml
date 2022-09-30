@@ -104,7 +104,7 @@ spec:
                 name: ui-interface
                 port:
                   number: 8080
-      host: spring-cloud-kubernetes-demo.com
+      host: spring-cloud-kubernetes-demo.vvaudi-lab.com
   tls:
     - secretName: vvaudi-lab.com-letsencrypt
       hosts:
