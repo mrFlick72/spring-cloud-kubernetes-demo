@@ -55,7 +55,7 @@ spec:
       containers:
         - name: ui-interface
           image: mrflick72/ui-interface:revamp
-          pullPolicy: Always
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           livenessProbe:

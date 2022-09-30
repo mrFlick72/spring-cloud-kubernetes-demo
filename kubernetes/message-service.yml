@@ -41,7 +41,7 @@ spec:
       containers:
         - name: message-service
           image: mrflick72/message-service:revamp
-          pullPolicy: Always
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
 
