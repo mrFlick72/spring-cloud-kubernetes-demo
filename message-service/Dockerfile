@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-ADD message-service.jar /usr/local/message-service/
+ADD build/libs/message-service.jar /usr/local/message-service/
 
 WORKDIR /usr/local/message-service/
 
