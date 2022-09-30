@@ -1,0 +1,40 @@
+name: build
+
+on:
+  push: { }
+  workflow_dispatch: { }
+
+jobs:
+  build-ui:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install openjdk
+        run: |
+          sudo apt-get update && sudo apt-get install openjdk-17-jdk
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+          java -version
+
+      - name: Build
+        run: |
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+          cd ui
+          mvn clean install -q  
+
+      - name: docker push
+        run: |
+          cd ui
+          if [[ ${GITHUB_REF##*/} == 'master' ]]
+          then
+            DOCKER_TAG="latest"
+          else
+            DOCKER_TAG="${GITHUB_REF##*/}"
+          fi
+          echo "$DOCKER_TAG"
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+          docker build . -t mrflick72/ui-interface:$DOCKER_TAG
+          docker push mrflick72/ui-interface:$DOCKER_TAG

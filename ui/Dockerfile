@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-ADD ui-interface.jar /usr/local/ui-interface/
+ADD target/ui-interface.jar /usr/local/ui-interface/
 
 WORKDIR /usr/local/ui-interface/
 
