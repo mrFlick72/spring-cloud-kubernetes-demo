@@ -81,6 +81,6 @@ class RouteConfig {
 
     private HandlerFunction<ServerResponse> sayHelloHandler() {
         return request -> helloService.sayHello(request.pathVariable("name"))
-                .flatMap(helloMessage -> ok().body(fromProducer(helloMessage, String.class)));
+                .flatMap(helloMessage -> ok().body(fromValue(helloMessage)));
     }
 }
