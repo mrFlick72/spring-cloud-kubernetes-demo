@@ -4,4 +4,4 @@ metadata:
   name: local-storage
   namespace: {{ .Release.Namespace }}
 provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
+volumeBindingMode: Immediate
