@@ -40,13 +40,13 @@ class SecurityConfig {
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User.builder()
                 .username("user")
-                .password("secret")
+                .password("{noop}secret")
                 .roles("USER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("secret")
+                .password("{noop}secret")
                 .roles("ADMIN")
                 .build();
 
