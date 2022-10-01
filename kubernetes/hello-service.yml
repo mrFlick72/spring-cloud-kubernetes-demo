@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
         - name: hello-service
-          image: mrflick72/hello-service:revamp
+          image: mrflick72/hello-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
