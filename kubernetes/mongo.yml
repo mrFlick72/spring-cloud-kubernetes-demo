@@ -2,6 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: mongo-pv-volume
+  namespace: spring-cloud-kubernetes-demo
   labels:
     type: local
     app: mongo
@@ -20,6 +21,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: mongo-pv-claim
+  namespace: spring-cloud-kubernetes-demo
   labels:
     app: mongo
 spec:
@@ -36,6 +38,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo
+  namespace: spring-cloud-kubernetes-demo
 spec:
   replicas: 1
   selector:
@@ -66,6 +69,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: mongo-svc
+  namespace: spring-cloud-kubernetes-demo
 spec:
   selector:
     app: mongo

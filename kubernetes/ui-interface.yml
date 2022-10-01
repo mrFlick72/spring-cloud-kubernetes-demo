@@ -2,10 +2,11 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
 data:
   application.yaml: |-
     server:
-      use-forward-headers: true
+      forward-headers-strategy: framework
 
     spring:
       redis:
@@ -33,6 +34,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
   labels:
     app: ui-interface
 spec:
@@ -52,7 +54,8 @@ spec:
     spec:
       containers:
         - name: ui-interface
-          image: mrflick72/ui-interface:latest
+          image: mrflick72/ui-interface:revamp
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           livenessProbe:
@@ -76,18 +79,26 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ui-interface
+  namespace: spring-cloud-kubernetes-demo
 spec:
   selector:
     app: ui-interface
   ports:
     - protocol: TCP
       port: 8080
+      name: http
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ui-interface-ingress
+  namespace: spring-cloud-kubernetes-demo
+  annotations:
+    kubernetes.io/ingress.class: "haproxy"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: vvaudi-lab.com-letsencrypt
+
 spec:
   rules:
     - http:
@@ -99,3 +110,8 @@ spec:
                 name: ui-interface
                 port:
                   number: 8080
+      host: spring-cloud-kubernetes-demo.vvaudi-lab.com
+  tls:
+    - secretName: vvaudi-lab.com-letsencrypt
+      hosts:
+        - spring-cloud-kubernetes-demo.vvaudi-lab.com

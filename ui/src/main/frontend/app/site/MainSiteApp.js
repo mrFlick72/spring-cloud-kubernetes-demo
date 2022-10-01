@@ -36,7 +36,7 @@ export default class MainSiteApp extends React.Component {
         let bottomSection = <p>{this.state.message}</p>
 
         return <React.Fragment>
-            <NavBar title="Message Managment"/>
+            <NavBar title="Message Management"/>
             <Container>
                 <Jumbotron title="Hello, world!"
                            inputRef={this.inputRef}
