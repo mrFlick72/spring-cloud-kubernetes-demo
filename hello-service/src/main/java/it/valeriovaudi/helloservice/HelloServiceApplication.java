@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static java.lang.String.format;
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.BodyInserters.*;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 import static reactor.core.publisher.Mono.just;
 
@@ -81,6 +81,6 @@ class RouteConfig {
 
     private HandlerFunction<ServerResponse> sayHelloHandler() {
         return request -> helloService.sayHello(request.pathVariable("name"))
-                .flatMap(helloMessage -> ok().body(fromObject(helloMessage)));
+                .flatMap(helloMessage -> ok().body(fromProducer(helloMessage, String.class)));
     }
 }

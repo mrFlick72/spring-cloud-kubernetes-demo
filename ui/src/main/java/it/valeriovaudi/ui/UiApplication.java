@@ -39,14 +39,16 @@ class SecurityConfig {
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User.builder()
+                .passwordEncoder(pswd -> pswd)
                 .username("user")
-                .password("{noop}secret")
+                .password("secret")
                 .roles("USER")
                 .build();
 
         UserDetails admin = User.builder()
+                .passwordEncoder(pswd -> pswd)
                 .username("admin")
-                .password("{noop}secret")
+                .password("secret")
                 .roles("ADMIN")
                 .build();
 
