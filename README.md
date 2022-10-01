@@ -31,7 +31,7 @@ In this project you can see used many technologies like:
 * Spring Cloud LoadBalancer
 * Spring Reactive Data Mongo
 * Spring WebFlux
-* Spring Boot 2.4.x
+* Spring Boot 2.7.x
 * Spring Session
 * Spring Reactive Security
 * Java/Kotlin
@@ -74,11 +74,12 @@ benefit of the *LoadBalancerExchangeFilterFunction* injected by spring for us. T
     
         ...
 
-        @Bean
-        @LoadBalanced
-        public WebClient webClient() {
-            return WebClient.builder().build();
-        }
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
+    }
+    
    }
 ```
 #### service integration
@@ -101,8 +102,8 @@ class HelloService {
 }
 ```
 
-The application.yml configuration provided via config map for kubernetes profile and application-netflix.yml for netflix profile. The benefit of use configmap 
-with kubernetes is that configuring restart actuator endpoint with spring cloud kubernetes configuration in the bootstrap.yml, we can benefit of a hot reload configuration mechanism
+The application.yml configuration provided via config map. The benefit of use configmap 
+with Spring Cloud Kubernetes is that configuring restart actuator endpoint with spring cloud kubernetes configuration in the application.yml, we can benefit of a hot reload configuration mechanism
 via Spring application context restart.
 
 The application is totally reactive and no blocking io. It involved: 
@@ -122,7 +123,7 @@ you can use this command:
 Remember to enable ingress with this command: ```minikube addons enable ingress -p spring-cloud-k8s```
 In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests under kubernetes folder.
 
-Pay attention before to install all k8s descriptors is needed to apply a command like this: `kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=default:default` 
+Pay attention before to install all k8s descriptors is needed to apply a command like this: `kubectl apply -f service-account.yml` 
  The command is needed due to Spring Cloud Kubernetes interacts with Kubernetes api, without run this command you will get an error like below: 
 ```
 There was an unexpected error (type=Internal Server Error, status=500).
@@ -137,25 +138,3 @@ Forbidden!Configured service account doesn't have access.
 Service account may have been revoked. endpoints "message-service" is forbidden: 
 User "system:serviceaccount:default:default" cannot get resource "endpoints" in API group "" in the namespace "default".
 ```
-## Conclusion
-
-Now!, what street choose?, Spring Cloud Netflix or Spring Cloud Kubernetes? Of course the right answer is it depends! 
-
-With Spring Cloud abstraction you can achieve many typical distributed system pattern like: service discovery, client side load balancing and configuration load in a Netflix or Kubernetes environment without 
-change one line of code, giving you the possibility to choose later the your way: K8S or not to K8S. Said that, the choice depends form 
-requirements, infrastructure already on place and many other concern. The my impression is: very cool the possibility of choose later and test in local, on premise or in the cloud with 
-Netflix or on K8s with the assurance that the application behaviour will be near the same, I have particularly appreciated the simple hot reload of application configuration on K8s.
-But on the other hands using Spring Cloud Kubernetes for service discovery and client load balancing, that are the main features exposed by Spring Cloud Kubernetes, 
-it is an overkill especially considering that those features that are already built in in K8s. 
-
-Moreover considering that the application have to talk with master for applying the api, it can be quite dangerous due to too much knowledge on your application of infrastructure 
-and the risk of coupling your application framework with the infrastructure it is a bad thing in my opinion. The real power is choose later not copling for ever to a platform or to a framework. 
-
-At the end if your application run on a public cloud provider use Spring Cloud Netflix can be a very convenient choice otherwise use Kubernetes may be a real popular and farsighted choice, 
-especially considering the real cool project pluggable on top of Kubernetes like Istio, Knative and considering that more and more providers are adopting Kubernetes, 
-AWS EKS, Google Cloud GKE, Pivotal PKS and many other are an example.
-
-Unfortunately there not exist a correct answer, there exist only use case in wich a choice fit or not. Like in many use case the 
-possibility of choice later and fast adopting a new way that is more capable for embrace business changing is a winner choice. 
-
-In this direction, in my opinion, Spring Cloud win due to give us the possibility to choose later if adopting Netflix or Kubernetes at any time and go up and forward in any time.
