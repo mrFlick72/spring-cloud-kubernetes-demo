@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: ui-interface
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
 data:
   application.yaml: |-
     server:
@@ -15,10 +15,10 @@ data:
       cloud:
         gateway:
           routes:
-            - id: hello-service
-              uri: lb://hello-service/
+            - id: ui-interface
+              uri: lb://ui-interface/
               predicates:
-                - Path=/hello-service/**
+                - Path=/ui-interface/**
               filters:
                 - StripPrefix=1
 
@@ -34,28 +34,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ui-interface
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
   labels:
     app: ui-interface
+    app.kubernetes.io/name: ui-interface
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 25%
+  replicas: {{ .Values.ui.replicas }}
   selector:
     matchLabels:
-      app: ui-interface
+  {{- include "ui-interface.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: ui-interface
+    {{- include "ui-interface.selectorLabels" . | nindent 8 }}
+    
     spec:
       containers:
         - name: ui-interface
-          image: mrflick72/ui-interface:latest
-          imagePullPolicy: Always
+          image: "mrflick72/ui-interface:{{ .Values.ui.image.tag }}"
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
           ports:
             - containerPort: 8080
           livenessProbe:
@@ -79,10 +77,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ui-interface
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ui-interface.labels" . | nindent 4 }}
 spec:
   selector:
-    app: ui-interface
+    {{- include "ui-interface.selectorLabels" . | nindent 4 }}
   ports:
     - protocol: TCP
       port: 8080
@@ -93,11 +93,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ui-interface-ingress
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
   annotations:
-    kubernetes.io/ingress.class: "haproxy"
-    kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: vvaudi-lab.com-letsencrypt
+    kubernetes.io/ingress.class: {{ .Values.ui.ingress.class }}
+    {{- with .Values.ui.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 
 spec:
   rules:
@@ -110,8 +111,8 @@ spec:
                 name: ui-interface
                 port:
                   number: 8080
-      host: spring-cloud-kubernetes-demo.vvaudi-lab.com
+      host: {{ .Values.ui.ingress.host }}
+    {{- with .Values.ui.ingress.tls }}
   tls:
-    - secretName: vvaudi-lab.com-letsencrypt
-      hosts:
-        - spring-cloud-kubernetes-demo.vvaudi-lab.com
+  {{- toYaml . | nindent 4}}
+    {{- end }}

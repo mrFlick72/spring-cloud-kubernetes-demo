@@ -1,0 +1,40 @@
+# Default values for spring-cloud-kubernetes-demo.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+messageService:
+  replicas: 2
+  image:
+    pullPolicy: Always
+    tag: latest
+helloService:
+
+  replicas: 2
+  image:
+    pullPolicy: Always
+    tag: latest
+
+ui:
+  replicas: 2
+  image:
+    pullPolicy: Always
+    tag: latest
+  ingress:
+    tls: { }
+    host: "*"
+    annotations: { }
+    class: nginx
+
+redis:
+  auth:
+    enabled: false
+  replica:
+    replicaCount: 1
+
+mongodb:
+  auth:
+    enabled: false
+  persistence:
+    storageClass: manual
+    accessModes:
+      - ReadWriteMany

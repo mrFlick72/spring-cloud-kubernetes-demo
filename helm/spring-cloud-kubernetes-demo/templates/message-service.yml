@@ -2,46 +2,39 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: message-service
-  namespace: spring-cloud-kubernetes-demo
-  labels:
-    app: message-service
+  namespace: {{ .Release.Namespace }}
 data:
   application.yml: |-
     spring:
       data:
         mongodb:
           host: mongo-svc
-    server:
-      use-forward-headers: true
-
 ---
   
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: message-service
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
   labels:
     app: message-service
+    app.kubernetes.io/name: message-service
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 25%
+  replicas: {{ .Values.messageService.replicas }}
   selector:
     matchLabels:
-      app: message-service
+  {{- include "message-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: message-service
+    {{- include "message-service.selectorLabels" . | nindent 8 }}
+    
     spec:
       containers:
         - name: message-service
-          image: mrflick72/message-service:latest
-          imagePullPolicy: Always
+          image: "mrflick72/message-service:{{ .Values.messageService.image.tag }}"
+          imagePullPolicy: {{ .Values.messageService.image.pullPolicy }}
           ports:
             - containerPort: 8080
 
@@ -66,10 +59,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: message-service
-  namespace: spring-cloud-kubernetes-demo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "message-service.labels" . | nindent 4 }}
 spec:
   selector:
-    app: message-service
+    {{- include "message-service.selectorLabels" . | nindent 4 }}
   ports:
     - protocol: TCP
       port: 8080
