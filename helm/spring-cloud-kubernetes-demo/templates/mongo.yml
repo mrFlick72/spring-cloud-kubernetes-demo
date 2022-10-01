@@ -6,6 +6,10 @@ metadata:
   labels:
     type: local
     app: mongo
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
 spec:
   storageClassName: manual
   capacity:
@@ -24,6 +28,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: mongo
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
 spec:
   storageClassName: manual
   accessModes:
