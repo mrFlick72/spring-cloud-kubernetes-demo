@@ -10,7 +10,7 @@ data:
 
     spring:
       redis:
-        host: redis-svc
+        host: {{ .Release.Namespace }}-redis-master
 
       cloud:
         gateway:
