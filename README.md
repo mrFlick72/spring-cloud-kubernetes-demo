@@ -9,11 +9,11 @@ only availing on profiled Maven/Gradle build and Spring profile.
 
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
 client load balancing and configuration management. The web main application is composed by two pages under security:
-  * a web page for standard users in order to get a special hello with a random special message for you 
-  * a web page for admin user in order to manage the special message list. 
+  * a web page for standard users in order to get a special hello with a random special message for you on the root or /index.html web application path
+    * a web page for admin user in order to manage the special message list on for /messages.html web application path. 
   * there exist a prebuilt user for both web application
-    * username user and password secret for /index.html web application 
-    * username admin and password secret for /messages.html web application
+    * username **user** and password **secret** for /index.html web application 
+    * username **admin** and password **secret** for /messages.html web application
  
  ### Web Application for simple user screenshot
  ![](https://raw.githubusercontent.com/mrFlick72/spring-cloud-kubernetes-demo/master/images/user_webapp.png)
@@ -122,3 +122,4 @@ you can use this command:
 
 Remember to enable ingress with this command: ```minikube addons enable ingress -p spring-cloud-k8s```
 In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests via helm chart under helm folder.
+
