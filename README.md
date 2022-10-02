@@ -121,20 +121,4 @@ you can use this command:
 ```minikube start --vm-driver=virtualbox --cpus 4 --memory 8192 -p spring-cloud-k8s```
 
 Remember to enable ingress with this command: ```minikube addons enable ingress -p spring-cloud-k8s```
-In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests under kubernetes folder.
-
-Pay attention before to install all k8s descriptors is needed to apply a command like this: `kubectl apply -f service-account.yml` 
- The command is needed due to Spring Cloud Kubernetes interacts with Kubernetes api, without run this command you will get an error like below: 
-```
-There was an unexpected error (type=Internal Server Error, status=500).
-Error creating bean with name 'ribbonLoadBalancingHttpClient' defined in org.springframework.cloud.netflix.ribbon.apache.HttpClientRibbonConfiguration:
-Unsatisfied dependency expressed through method 'ribbonLoadBalancingHttpClient' parameter 2; nested exception is org.springframework.beans.factory.BeanCreationException:
-Error creating bean with name 'ribbonLoadBalancer' defined in org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration:
-Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException:
-Failed to instantiate [com.netflix.loadbalancer.ILoadBalancer]: 
-Factory method 'ribbonLoadBalancer' threw exception; nested exception is io.fabric8.kubernetes.client.KubernetesClientException: 
-Failure executing: GET at: https://10.96.0.1/api/v1/namespaces/default/endpoints/message-service. Message: 
-Forbidden!Configured service account doesn't have access.
-Service account may have been revoked. endpoints "message-service" is forbidden: 
-User "system:serviceaccount:default:default" cannot get resource "endpoints" in API group "" in the namespace "default".
-```
+In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests via helm chart under helm folder.
