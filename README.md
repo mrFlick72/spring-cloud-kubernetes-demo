@@ -1,10 +1,3 @@
-# Spring Cloud Kubernetes Hello World
-
-Spring Cloud is an umbrella of projects that help us to build Cloud Native Java application using Spring Ecosystem. 
-Here I will show how, using the Spring Cloud Abstraction, it is very easy to switch between specific vendor implementation 
-without change one line of code. In particular this application can run on Spring Cloud Netflix and the latest Spring Cloud Kubernetes 
-only availing on profiled Maven/Gradle build and Spring profile.
-
 ## The use case
 
 The sample application is a very simple hello world web application. This application is thought for explore service composition, 
