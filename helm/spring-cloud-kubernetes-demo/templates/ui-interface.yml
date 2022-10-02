@@ -15,10 +15,10 @@ data:
       cloud:
         gateway:
           routes:
-            - id: ui-interface
-              uri: lb://ui-interface/
+            - id: hello-service
+              uri: lb://hello-service/
               predicates:
-                - Path=/ui-interface/**
+                - Path=/hello-service/**
               filters:
                 - StripPrefix=1
 
