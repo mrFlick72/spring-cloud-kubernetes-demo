@@ -3,6 +3,8 @@ spring:
     name: ui-interface
   cloud:
     kubernetes:
+      config:
+        fail-fast: true
       reload:
         enabled: true
         mode: polling
