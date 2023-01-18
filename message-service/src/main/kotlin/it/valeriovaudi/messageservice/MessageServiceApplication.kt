@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
-import org.springframework.web.reactive.function.BodyInserters.fromObject
+import org.springframework.web.reactive.function.BodyInserters.fromValue
 import org.springframework.web.reactive.function.server.router
 import org.springframework.web.util.UriComponentsBuilder
 import java.util.*
@@ -31,7 +31,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
         GET("/message") {
             messageRepository.findAll()
                     .collectList()
-                    .flatMap { ok().body(fromObject(it)) }
+                    .flatMap { ok().body(fromValue(it)) }
         }
 
         GET("/message/random") {
@@ -39,7 +39,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
                     .collectList()
                     .flatMap {
                         if (it.size != 0) {
-                            ok().body(fromObject(it[Random().nextInt(it.size)]))
+                            ok().body(fromValue(it[Random().nextInt(it.size)]))
                         } else {
                             notFound().build()
                         }
@@ -48,7 +48,7 @@ class MessageRoute(private val messageRepository: MessageRepository) {
 
         GET("/message/{messageId}") {
             messageRepository.findById(it.pathVariable("messageId"))
-                    .flatMap { ok().body(fromObject(it)) }
+                    .flatMap { ok().body(fromValue(it)) }
         }
 
         POST("/message") {
