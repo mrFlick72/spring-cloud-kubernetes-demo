@@ -9,6 +9,8 @@ data:
       forward-headers-strategy: framework
 
     spring:
+      redis:
+        host: {{ .Release.Namespace }}-redis-master
       data:
         redis:
           host: {{ .Release.Namespace }}-redis-master
