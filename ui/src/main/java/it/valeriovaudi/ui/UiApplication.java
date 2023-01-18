@@ -1,5 +1,7 @@
 package it.valeriovaudi.ui;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,11 @@ public class UiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UiApplication.class, args);
+    }
+
+    @Bean
+    public ApplicationRunner runner(@Value("${testValue: }") String testValue) {
+        return (arg) -> System.out.println("the value configured in teh config map is: " + testValue);
     }
 
 }
