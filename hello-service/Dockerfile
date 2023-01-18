@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17.0.4
 
 ADD build/libs/hello-service.jar /usr/local/hello-service/
 
