@@ -7,8 +7,8 @@ messageService:
   image:
     pullPolicy: Always
     tag: latest
-helloService:
 
+helloService:
   replicas: 2
   image:
     pullPolicy: Always
