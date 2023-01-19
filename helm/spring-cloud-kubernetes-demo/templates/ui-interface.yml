@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yaml: |-
-    test: it is a test value
+    testValue: it is a test value
     server:
       forward-headers-strategy: framework
 
