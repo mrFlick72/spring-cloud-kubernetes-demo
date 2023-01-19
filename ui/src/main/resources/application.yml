@@ -1,6 +1,6 @@
 spring:
-  main:
-    cloud-platform: kubernetes
+#  main:
+#    cloud-platform: kubernetes
   application:
     name: ui-interface
   cloud:
