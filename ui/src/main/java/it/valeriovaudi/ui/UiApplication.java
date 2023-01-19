@@ -22,7 +22,7 @@ public class UiApplication {
     }
 
     @Bean
-    public ApplicationRunner runner(@Value("${testValue: }") String testValue) {
+    public ApplicationRunner runner(@Value("${testValue}") String testValue) {
         return (arg) -> System.out.println("the value configured in teh config map is: " + testValue);
     }
 
