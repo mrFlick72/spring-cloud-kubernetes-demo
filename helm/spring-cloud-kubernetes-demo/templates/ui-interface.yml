@@ -5,12 +5,14 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yaml: |-
+    testValue: it is a test value
     server:
       forward-headers-strategy: framework
 
     spring:
-      redis:
-        host: {{ .Release.Namespace }}-redis-master
+      data:
+        redis:
+          host: {{ .Release.Namespace }}-redis-master
 
       cloud:
         gateway:
@@ -56,9 +58,10 @@ spec:
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
           ports:
             - containerPort: 8080
+            - containerPort: 8081
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: 8081
             initialDelaySeconds: 10
             periodSeconds: 10
@@ -66,7 +69,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: 8081
             initialDelaySeconds: 10
             periodSeconds: 10

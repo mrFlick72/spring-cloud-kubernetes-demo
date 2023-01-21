@@ -37,10 +37,10 @@ spec:
           imagePullPolicy: {{ .Values.messageService.image.pullPolicy }}
           ports:
             - containerPort: 8080
-
+            - containerPort: 8081
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: 8081
             initialDelaySeconds: 10
             periodSeconds: 10
@@ -48,7 +48,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: 8081
             initialDelaySeconds: 10
             periodSeconds: 10

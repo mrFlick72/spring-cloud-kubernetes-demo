@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17.0.4
 
 ADD build/libs/message-service.jar /usr/local/message-service/
 

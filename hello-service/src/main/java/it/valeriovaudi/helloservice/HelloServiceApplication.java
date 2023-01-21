@@ -1,6 +1,5 @@
 package it.valeriovaudi.helloservice;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,7 +37,6 @@ public class HelloServiceApplication {
     }
 }
 
-@Slf4j
 @Service
 class HelloService {
 
