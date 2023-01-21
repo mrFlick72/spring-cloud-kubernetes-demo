@@ -24,7 +24,7 @@ In this project you can see used many technologies like:
 * Spring Cloud LoadBalancer
 * Spring Reactive Data Mongo
 * Spring WebFlux
-* Spring Boot 2.7.x
+* Spring Boot 3.x
 * Spring Session
 * Spring Reactive Security
 * Java/Kotlin
