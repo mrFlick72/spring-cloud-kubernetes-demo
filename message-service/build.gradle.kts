@@ -16,11 +16,8 @@ repositories {
 
 extra["springCloudVersion"] = "2022.0.0"
 
-
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-all")
-
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 

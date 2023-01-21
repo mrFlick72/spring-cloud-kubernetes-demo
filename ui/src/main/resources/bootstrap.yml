@@ -1,12 +1,8 @@
 spring:
-#  main:
-#    cloud-platform: kubernetes
   application:
     name: ui-interface
   cloud:
     kubernetes:
-      config:
-        fail-fast: true
       reload:
         enabled: true
         mode: polling

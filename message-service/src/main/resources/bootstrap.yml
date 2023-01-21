@@ -1,15 +1,12 @@
 spring:
   application:
-    name: hello-service
+    name: message-service
   cloud:
     kubernetes:
       reload:
         enabled: true
         mode: polling
         period: 5000
-      config:
-        sources:
-          - name: ${spring.application.name}
 
 management:
   endpoints:
