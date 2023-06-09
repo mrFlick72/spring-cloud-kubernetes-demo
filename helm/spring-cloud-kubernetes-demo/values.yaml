@@ -14,7 +14,14 @@ helloService:
     pullPolicy: Always
     tag: latest
 
+keycloak:
+  tenantUrl: http://keycloak.local
+  sso:
+    clientId: xxx
+    clientSecret: xxx
+
 ui:
+  baseUrl: http://localhost:8080
   replicas: 2
   image:
     pullPolicy: Always

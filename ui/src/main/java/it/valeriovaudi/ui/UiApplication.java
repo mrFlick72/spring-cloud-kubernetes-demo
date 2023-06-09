@@ -4,13 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-
-import static java.util.Arrays.asList;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
 @SpringBootApplication
 public class UiApplication {
@@ -24,31 +21,30 @@ public class UiApplication {
 @Configuration(proxyBeanMethods = false)
 class SecurityConfig {
 
-    @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        return http.csrf().disable().authorizeExchange()
-                .pathMatchers("/index.html").hasRole("USER")
-                .pathMatchers("/messages.html").hasRole("ADMIN")
-                .anyExchange().permitAll()
-                .and().formLogin()
-                .and().logout()
-                .and().build();
-    }
 
     @Bean
-    public MapReactiveUserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("{noop}secret")
-                .roles("USER")
-                .build();
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.headers(configurer -> configurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("{noop}secret")
-                .roles("ADMIN")
-                .build();
+        http.logout(logoutConfigurer ->
+                logoutConfigurer.deleteCookies("opbs")
+                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/index")
+        );
 
-        return new MapReactiveUserDetailsService(asList(admin, user));
+
+        http.oauth2Login(loginConfigurer -> loginConfigurer.defaultSuccessUrl("/index"));
+
+        http.authorizeHttpRequests(
+                auth ->
+                        auth
+                                .requestMatchers("/index.html").hasRole("USER")
+                                .requestMatchers("/messages.html").hasRole("USER")
+                                .anyRequest().permitAll()
+        );
+
+        return http.build();
     }
+
 }

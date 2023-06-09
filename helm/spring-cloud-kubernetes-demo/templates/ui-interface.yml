@@ -5,7 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yaml: |-
-    testValue: it is a test value
     server:
       forward-headers-strategy: framework
 
@@ -13,6 +12,23 @@ data:
       data:
         redis:
           host: {{ .Release.Namespace }}-redis-master
+
+      security:
+        oauth2:
+          client:
+            registration:
+              client:
+                client-id: {{ .Values.keycloak.sso.clientId }}
+                client-secret: {{ .Values.keycloak.sso.clientSecret }}
+                client-name: keycloak
+                provider: keycloak
+                scope:
+                  - openid
+                authorization-grant-type: authorization_code
+            provider:
+              keycloak:
+                issuer-uri: {{ .Values.keycloak.tenantUrl }}
+                user-name-attribute: preferred_username
 
       cloud:
         gateway:
