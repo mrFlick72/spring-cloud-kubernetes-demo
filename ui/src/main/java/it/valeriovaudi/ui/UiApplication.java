@@ -7,15 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
@@ -23,7 +20,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
@@ -33,44 +31,6 @@ public class UiApplication {
         SpringApplication.run(UiApplication.class, args);
     }
 
-}
-
-class UserIntrospectorOidcUserService implements ReactiveOAuth2UserService<OidcUserRequest, OidcUser> {
-
-    private final OidcUserService delegate;
-
-    public UserIntrospectorOidcUserService(OidcUserService delegate) {
-        this.delegate = delegate;
-    }
-
-
-
-    @Override
-    public Mono<OidcUser> loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
-
-        return Mono.empty();
-    }
-
-    public OidcUser loadUser(OidcUserRequest userRequest) {
-        OidcUser oidcUser = delegate.loadUser(userRequest);
-        Collection<GrantedAuthority> mappedAuthorities = authoritiesFor(oidcUser);
-
-        return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-    }
-
-
-    private Set<GrantedAuthority> authoritiesFor(OidcUser user) {
-        List<String> authorities = authoritiesFrom(user);
-        return authorities.stream()
-                .map(SimpleGrantedAuthority::new)
-                .map(authority -> new OidcUserAuthority(authority.getAuthority(), user.getIdToken(), user.getUserInfo()))
-                .collect(Collectors.toSet());
-    }
-
-    private List<String> authoritiesFrom(OidcUser oidcUser) {
-        List<String> authoritiesClaim = (List<String>) oidcUser.getClaimAsMap("realm_access").get("roles");
-        return Optional.ofNullable(authoritiesClaim).orElse(Collections.emptyList());
-    }
 }
 
 @EnableWebFluxSecurity
@@ -113,7 +73,7 @@ class SecurityConfig {
         http.logout(logoutSpec -> {
             logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
         });
-
+˚
 
         http.oauth2Login(Customizer.withDefaults());
 
