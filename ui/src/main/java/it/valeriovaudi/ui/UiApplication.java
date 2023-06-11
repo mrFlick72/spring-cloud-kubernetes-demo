@@ -1,5 +1,6 @@
 package it.valeriovaudi.ui;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -67,37 +68,36 @@ class SecurityConfig {
     }
 
     @Bean
-    public SecurityWebFilterChain defaultSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain defaultSecurityFilterChain(
+            @Value("${postLogoutUrl}") String postLogoutUrl,
+            ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable);
         http.headers(configurer -> configurer.frameOptions(ServerHttpSecurity.HeaderSpec.FrameOptionsSpec::disable));
 
-        http.logout(logoutSpec -> {
-            logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
-        });
-
-
         http.oauth2Login(Customizer.withDefaults());
+        http.logout(logoutSpec -> {
+            logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(postLogoutUrl,clientRegistrationRepository));
+        });
 
         http.authorizeExchange(
                 auth ->
                         auth
+                                .pathMatchers("/index").hasAuthority("USER")
                                 .pathMatchers("/index.html").hasAuthority("USER")
                                 .pathMatchers("/messages.html").hasAuthority("ADMIN")
                                 .anyExchange().permitAll()
         );
 
-
         return http.build();
     }
 
-    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(ReactiveClientRegistrationRepository clientRegistrationRepository) {
+    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(
+            String postLogoutUrl,
+            ReactiveClientRegistrationRepository clientRegistrationRepository
+    ) {
         OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
                 new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
-
-        // Sets the location that the End-User's User Agent will be redirected to
-        // after the logout has been performed at the Provider
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
-
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri(postLogoutUrl);
         return oidcLogoutSuccessHandler;
     }
 }

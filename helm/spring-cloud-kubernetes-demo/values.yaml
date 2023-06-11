@@ -21,7 +21,7 @@ keycloak:
     clientSecret: xxx
 
 ui:
-  baseUrl: http://localhost:8080
+  postLogoutUrl: http://localhost:8080
   replicas: 2
   image:
     pullPolicy: Always

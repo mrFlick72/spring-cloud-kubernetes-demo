@@ -13,6 +13,8 @@ data:
         redis:
           host: {{ .Release.Namespace }}-redis-master
 
+      postLogoutUrl: {{ .Values.ui.postLogoutUrl }}
+
       security:
         oauth2:
           client:
