@@ -58,12 +58,9 @@ class SecurityConfig {
                                 .map(SimpleGrantedAuthority::new)
                                 .map(authority -> new OidcUserAuthority(authority.getAuthority(), oidcUser.getIdToken(), oidcUser.getUserInfo()))
                                 .collect(Collectors.toSet());
-
-                        System.out.println(oidcAuthorities);
                         return Mono.just(new DefaultOidcUser(oidcAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo()));
                     });
         };
-
 
     }
 
@@ -76,7 +73,7 @@ class SecurityConfig {
 
         http.oauth2Login(Customizer.withDefaults());
         http.logout(logoutSpec -> {
-            logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(postLogoutUrl,clientRegistrationRepository));
+            logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(postLogoutUrl, clientRegistrationRepository));
         });
 
         http.authorizeExchange(
