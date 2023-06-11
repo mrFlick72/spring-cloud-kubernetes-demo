@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yaml: |-
+    postLogoutUrl: {{ .Values.ui.postLogoutUrl }}
     server:
       forward-headers-strategy: framework
 
@@ -13,7 +14,6 @@ data:
         redis:
           host: {{ .Release.Namespace }}-redis-master
 
-      postLogoutUrl: {{ .Values.ui.postLogoutUrl }}
 
       security:
         oauth2:
