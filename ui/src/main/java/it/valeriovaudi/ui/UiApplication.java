@@ -85,7 +85,7 @@ class SecurityConfig {
         http.authorizeHttpRequests(
                 auth ->
                         auth
-                                .requestMatchers("/index.html").hasAuthority("USER")
+                                .requestMatchers("/index.html").hasAuthority("ADMIN")
                                 .requestMatchers("/messages.html").hasAuthority("USER")
                                 .anyRequest().permitAll()
         );
