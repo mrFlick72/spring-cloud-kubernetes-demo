@@ -73,7 +73,7 @@ class SecurityConfig {
         http.logout(logoutSpec -> {
             logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
         });
-˚
+
 
         http.oauth2Login(Customizer.withDefaults());
 
