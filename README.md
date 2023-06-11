@@ -116,3 +116,4 @@ you can use this command:
 Remember to enable ingress with this command: ```minikube addons enable ingress -p spring-cloud-k8s```
 In order to test on minikube you can use my docker images on docker hub and that's it install the kubernetes manifests via helm chart under helm folder.
 
+if you want you can try it online ;) [user page](https://spring-cloud-kubernetes-demo.vvaudi-lab.com/index.html), or [admin page](https://spring-cloud-kubernetes-demo.vvaudi-lab.com/messages.html) 
