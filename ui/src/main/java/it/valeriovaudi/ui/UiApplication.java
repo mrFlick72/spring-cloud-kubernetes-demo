@@ -4,19 +4,24 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +35,7 @@ public class UiApplication {
 
 }
 
-class UserIntrospectorOidcUserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
+class UserIntrospectorOidcUserService implements ReactiveOAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final OidcUserService delegate;
 
@@ -38,7 +43,14 @@ class UserIntrospectorOidcUserService implements OAuth2UserService<OidcUserReque
         this.delegate = delegate;
     }
 
+
+
     @Override
+    public Mono<OidcUser> loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+
+        return Mono.empty();
+    }
+
     public OidcUser loadUser(OidcUserRequest userRequest) {
         OidcUser oidcUser = delegate.loadUser(userRequest);
         Collection<GrantedAuthority> mappedAuthorities = authoritiesFor(oidcUser);
@@ -61,39 +73,70 @@ class UserIntrospectorOidcUserService implements OAuth2UserService<OidcUserReque
     }
 }
 
-@EnableWebSecurity
+@EnableWebFluxSecurity
 @Configuration(proxyBeanMethods = false)
 class SecurityConfig {
 
+    private final ReactiveClientRegistrationRepository clientRegistrationRepository;
+
+    SecurityConfig(ReactiveClientRegistrationRepository clientRegistrationRepository) {
+        this.clientRegistrationRepository = clientRegistrationRepository;
+    }
 
     @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.headers(configurer -> configurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-
-        http.logout(logoutConfigurer ->
-                logoutConfigurer.deleteCookies("opbs")
-                        .invalidateHttpSession(true)
-                        .logoutSuccessUrl("/index")
-        );
+    public ReactiveOAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        final OidcReactiveOAuth2UserService delegate = new OidcReactiveOAuth2UserService();
 
 
-        http.oauth2Login(configurer ->
-                configurer.defaultSuccessUrl("/index").userInfoEndpoint(config ->
-                        config.oidcUserService(
-                                new UserIntrospectorOidcUserService(new OidcUserService()))
-                ));
+        return (userRequest) -> {
+            // Delegate to the default implementation for loading a user
+            return delegate.loadUser(userRequest)
+                    .flatMap((oidcUser) -> {
+                        List<String> authorities = (List<String>) oidcUser.getClaimAsMap("realm_access").get("roles");
+                        Set<OidcUserAuthority> oidcAuthorities = authorities.stream()
+                                .map(SimpleGrantedAuthority::new)
+                                .map(authority -> new OidcUserAuthority(authority.getAuthority(), oidcUser.getIdToken(), oidcUser.getUserInfo()))
+                                .collect(Collectors.toSet());
 
-        http.authorizeHttpRequests(
+                        return Mono.just(new DefaultOidcUser(oidcAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo()));
+                    });
+        };
+
+
+    }
+
+    @Bean
+    public SecurityWebFilterChain defaultSecurityFilterChain(ServerHttpSecurity http) {
+        http.csrf(ServerHttpSecurity.CsrfSpec::disable);
+        http.headers(configurer -> configurer.frameOptions(ServerHttpSecurity.HeaderSpec.FrameOptionsSpec::disable));
+
+        http.logout(logoutSpec -> {
+            logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
+        });
+
+
+        http.oauth2Login(Customizer.withDefaults());
+
+        http.authorizeExchange(
                 auth ->
                         auth
-                                .requestMatchers("/index.html").hasAuthority("ADMIN")
-                                .requestMatchers("/messages.html").hasAuthority("USER")
-                                .anyRequest().permitAll()
+                                .pathMatchers("/index.html").hasAuthority("ADMIN")
+                                .pathMatchers("/messages.html").hasAuthority("USER")
+                                .anyExchange().permitAll()
         );
 
 
         return http.build();
     }
 
+    private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(ReactiveClientRegistrationRepository clientRegistrationRepository) {
+        OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
+                new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
+
+        // Sets the location that the End-User's User Agent will be redirected to
+        // after the logout has been performed at the Provider
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
+
+        return oidcLogoutSuccessHandler;
+    }
 }
