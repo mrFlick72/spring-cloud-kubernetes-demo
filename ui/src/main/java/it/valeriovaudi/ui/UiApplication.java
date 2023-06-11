@@ -58,6 +58,7 @@ class SecurityConfig {
                                 .map(authority -> new OidcUserAuthority(authority.getAuthority(), oidcUser.getIdToken(), oidcUser.getUserInfo()))
                                 .collect(Collectors.toSet());
 
+                        System.out.println(oidcAuthorities);
                         return Mono.just(new DefaultOidcUser(oidcAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo()));
                     });
         };
