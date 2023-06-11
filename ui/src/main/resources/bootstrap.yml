@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: kubernetes
+
   application:
     name: ui-interface
   cloud:
