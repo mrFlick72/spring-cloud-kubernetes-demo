@@ -80,8 +80,8 @@ class SecurityConfig {
         http.authorizeExchange(
                 auth ->
                         auth
-                                .pathMatchers("/index.html").hasAuthority("ADMIN")
-                                .pathMatchers("/messages.html").hasAuthority("USER")
+                                .pathMatchers("/index.html").hasAuthority("USER")
+                                .pathMatchers("/messages.html").hasAuthority("ADMIN")
                                 .anyExchange().permitAll()
         );
 
